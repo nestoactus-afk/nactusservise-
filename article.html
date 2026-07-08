@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Article</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+<style>
+:root{--ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#ffffff;--accent:#e85d26;--accent2:#f5a623;--blue:#1a56db;--radius:14px;--shadow:0 4px 24px rgba(11,15,26,0.08);--transition:all 0.28s cubic-bezier(0.4,0,0.2,1)}
+[data-theme="dark"]{--ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;--white:#161b27;--shadow:0 4px 24px rgba(0,0,0,.35)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:16px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--ink);letter-spacing:1px}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--ink-soft);font-size:14px;font-weight:500;transition:var(--transition)}
+.nav-links a:hover{background:rgba(232,93,38,0.08);color:var(--accent)}
+
+.breadcrumb{max-width:860px;margin:28px auto 0;padding:0 20px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.breadcrumb a{color:var(--muted);text-decoration:none;transition:var(--transition)}
+.breadcrumb a:hover{color:var(--accent)}
+.breadcrumb span{color:var(--muted);opacity:.5}
+
+.article-outer{max-width:860px;margin:32px auto 80px;padding:0 20px}
+.article-card{background:var(--white);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;transition:background .3s}
+
+.article-head{padding:48px 56px 36px}
+.cat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:30px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:20px}
+.cat-sport{background:#fef3c7;color:#b45309}
+.cat-edu{background:#d1fae5;color:#047857}
+.cat-pol{background:#ede9fe;color:#6d28d9}
+.cat-actu{background:#e0e7ff;color:#3730a3}
+.article-head h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;line-height:1.2;color:var(--ink);margin-bottom:20px}
+.article-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding-top:16px;border-top:1px solid rgba(0,0,0,0.06)}
+[data-theme="dark"] .article-meta{border-top-color:rgba(255,255,255,0.08)}
+.meta-item{display:flex;align-items:center;gap:5px}
+
+.article-media{width:100%;overflow:hidden;background:#e2e8f0;max-height:500px}
+.article-media img{width:100%;max-height:500px;object-fit:cover;display:block}
+.article-media iframe{width:100%;height:460px;display:block;border:0}
+.article-media video{width:100%;max-height:460px;display:block}
+
+.article-body{padding:44px 56px 52px}
+.article-body .lead{font-size:1.18rem;font-weight:500;color:var(--ink-soft);line-height:1.75;margin-bottom:28px;padding-bottom:28px;border-bottom:2px solid rgba(0,0,0,0.06)}
+[data-theme="dark"] .article-body .lead{border-bottom-color:rgba(255,255,255,0.08)}
+.article-body .content{font-family:'Lora',serif;font-size:1.08rem;line-height:1.9;color:var(--ink-soft)}
+.article-body .content p{margin-bottom:22px}
+.article-body .content p:last-child{margin-bottom:0}
+
+/* Classes générées par l'éditeur Quill (admin) — nécessaires pour un rendu fidèle */
+.article-body .content .ql-size-10px,.article-body .lead.ql-size-10px{font-size:10px}
+.article-body .content .ql-size-12px,.article-body .lead.ql-size-12px{font-size:12px}
+.article-body .content .ql-size-14px,.article-body .lead.ql-size-14px{font-size:14px}
+.article-body .content .ql-size-16px,.article-body .lead.ql-size-16px{font-size:16px}
+.article-body .content .ql-size-18px,.article-body .lead.ql-size-18px{font-size:18px}
+.article-body .content .ql-size-24px,.article-body .lead.ql-size-24px{font-size:24px}
+.article-body .content .ql-size-32px,.article-body .lead.ql-size-32px{font-size:32px}
+.article-body .content .ql-size-48px,.article-body .lead.ql-size-48px{font-size:48px}
+.article-body .content .ql-font-arial{font-family:Arial,sans-serif}
+.article-body .content .ql-font-times-new-roman{font-family:'Times New Roman',serif}
+.article-body .content .ql-font-courier-new{font-family:'Courier New',monospace}
+.article-body .content .ql-font-georgia{font-family:Georgia,serif}
+.article-body .content .ql-font-verdana{font-family:Verdana,sans-serif}
+.article-body .content .ql-font-tahoma{font-family:Tahoma,sans-serif}
+.article-body .content .ql-font-trebuchet-ms{font-family:'Trebuchet MS',sans-serif}
+.article-body .content .ql-font-garamond{font-family:Garamond,serif}
+.article-body .content .ql-font-helvetica{font-family:Helvetica,Arial,sans-serif}
+.article-body .content .ql-font-impact{font-family:Impact,'Arial Narrow Bold',sans-serif}
+.article-body .content .ql-font-comic-sans{font-family:'Comic Sans MS','Comic Sans',cursive}
+.article-body .content .ql-font-roboto{font-family:'Roboto',sans-serif}
+.article-body .content .ql-font-montserrat{font-family:'Montserrat',sans-serif}
+.article-body .content .ql-font-lato{font-family:'Lato',sans-serif}
+.article-body .content .ql-font-open-sans{font-family:'Open Sans',sans-serif}
+.article-body .content .ql-font-merriweather{font-family:'Merriweather',serif}
+.article-body .content .ql-font-playfair-display{font-family:'Playfair Display',serif}
+.article-body .content .ql-font-oswald{font-family:'Oswald',sans-serif}
+.article-body .content .ql-align-center{text-align:center}
+.article-body .content .ql-align-right{text-align:right}
+.article-body .content .ql-align-justify{text-align:justify}
+.article-body .content .ql-indent-1{padding-left:2em}
+.article-body .content .ql-indent-2{padding-left:4em}
+.article-body .content blockquote{border-left:3px solid var(--accent);padding-left:16px;color:var(--muted);margin:18px 0;font-style:italic}
+.article-body .content pre{background:#1e293b;color:#e2e8f0;padding:14px;border-radius:10px;overflow-x:auto;font-size:.9rem;margin:18px 0}
+.article-body .content img{max-width:100%;height:auto;border-radius:10px;margin:18px 0;display:block}
+.article-body .content sub{vertical-align:sub;font-size:smaller}
+.article-body .content sup{vertical-align:super;font-size:smaller}
+
+.file-attachment{margin:32px 56px;background:var(--bg);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:18px 24px;display:flex;align-items:center;gap:16px}
+[data-theme="dark"] .file-attachment{border-color:rgba(255,255,255,0.1)}
+.file-icon{font-size:2rem;flex-shrink:0}
+.file-info{flex:1}
+.file-info strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+.file-info span{font-size:12px;color:var(--muted)}
+.file-dl{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:0 3px 10px rgba(232,93,38,0.3);flex-shrink:0}
+.file-dl:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(232,93,38,0.4)}
+
+.article-footer{padding:28px 56px 44px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+[data-theme="dark"] .article-footer{border-top-color:rgba(255,255,255,0.08)}
+.btn-back{display:inline-flex;align-items:center;gap:8px;background:var(--bg);color:var(--ink-soft);padding:12px 22px;border-radius:30px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid rgba(0,0,0,0.08);transition:var(--transition)}
+[data-theme="dark"] .btn-back{border-color:rgba(255,255,255,0.1)}
+.btn-back:hover{background:rgba(232,93,38,.08);color:var(--accent)}
+.share-group{display:flex;align-items:center;gap:10px}
+.share-label{font-size:13px;color:var(--muted);font-weight:500}
+.share-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:16px;transition:var(--transition)}
+.share-wa{background:#25d366;color:white}
+.share-fb{background:#1877f2;color:white}
+.share-x{background:#000;color:white}
+.share-btn:hover{transform:scale(1.12)}
+
+/* ══ BARRE D'ACTIONS : LIKE / FAVORI ══ */
+.actions-bar{display:flex;align-items:center;gap:10px;padding:16px 56px;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);background:var(--bg);flex-wrap:wrap}
+[data-theme="dark"] .actions-bar{border-color:rgba(255,255,255,.08)}
+.action-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;border:1.5px solid rgba(0,0,0,.1);background:var(--white);color:var(--ink-soft);font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:inherit}
+[data-theme="dark"] .action-btn{border-color:rgba(255,255,255,.12);background:var(--bg)}
+.action-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.action-btn.liked{background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:#fca5a5;color:#dc2626}
+.action-btn.bookmarked{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#fbbf24;color:#d97706}
+.action-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+/* ══ COMMENTAIRES ══ */
+.comments-section{max-width:860px;margin:0 auto 60px;padding:0 20px}
+.comments-card{background:var(--white);border-radius:20px;box-shadow:var(--shadow);padding:36px 52px;transition:background .3s}
+[data-theme="dark"] .comments-card{background:var(--white)}
+.comments-card h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;margin-bottom:24px;color:var(--ink)}
+.comment-count{color:var(--muted);font-size:1rem;font-weight:400}
+.comment-form{background:var(--bg);border-radius:14px;padding:18px;margin-bottom:24px;border:1px solid rgba(0,0,0,.06)}
+[data-theme="dark"] .comment-form{border-color:rgba(255,255,255,.08)}
+.comment-form textarea{width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;background:var(--white);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical;min-height:90px;outline:none;transition:var(--transition)}
+[data-theme="dark"] .comment-form textarea{border-color:rgba(255,255,255,.12);background:var(--bg)}
+.comment-form textarea:focus{border-color:var(--accent)}
+.comment-form-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:8px}
+.comment-form-footer small{font-size:12px;color:var(--muted)}
+.comment-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;transition:var(--transition);font-family:inherit}
+.comment-submit:hover{transform:translateY(-1px);opacity:.9}
+.comment-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.login-prompt{font-size:13px;color:var(--muted);padding:14px;background:rgba(232,93,38,.06);border-radius:10px;text-align:center;margin-bottom:20px}
+.login-prompt a{color:var(--accent);font-weight:600;text-decoration:none}
+.comment-item{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+[data-theme="dark"] .comment-item{border-bottom-color:rgba(255,255,255,.08)}
+.comment-item:last-child{border-bottom:none}
+.comment-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:white;flex-shrink:0;overflow:hidden}
+.comment-avatar img{width:100%;height:100%;object-fit:cover}
+.comment-body{flex:1;min-width:0}
+.comment-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.comment-author{font-weight:700;font-size:14px;color:var(--ink)}
+.comment-date{font-size:12px;color:var(--muted)}
+.comment-text{font-size:14px;color:var(--ink-soft);line-height:1.6;word-break:break-word;white-space:pre-wrap}
+.comment-actions{display:flex;gap:8px;margin-top:8px}
+.cmt-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:20px;transition:var(--transition);font-family:inherit}
+.cmt-btn:hover{color:#dc2626;background:rgba(220,38,38,.08)}
+.cmt-btn.liked{color:#dc2626;font-weight:700}
+.comments-empty{text-align:center;color:var(--muted);padding:32px;font-size:14px}
+
+.error-state{text-align:center;padding:80px 40px}
+.error-state h3{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:12px;color:var(--ink)}
+.error-state p{color:var(--muted);margin-bottom:28px}
+
+.skeleton-wrap{padding:0}
+.sk-line{background:linear-gradient(90deg,rgba(0,0,0,0.05) 25%,rgba(0,0,0,0.09) 50%,rgba(0,0,0,0.05) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+[data-theme="dark"] .sk-line{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:200% 100%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:700px){
+  .nav{padding:0 16px}.nav-links{display:none}
+  .article-head,.article-body,.article-footer{padding-left:22px;padding-right:22px}
+  .file-attachment{margin-left:22px;margin-right:22px;flex-direction:column;align-items:flex-start}
+  .article-head{padding-top:32px}
+  .article-media iframe{height:220px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sport.html">Sport</a></li>
+      <li><a href="education.html">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="breadcrumb">
+  <a href="index.html">Accueil</a>
+  <span>›</span>
+  <span id="bc-cat">Article</span>
+</div>
+
+<div class="article-outer">
+  <div class="article-card" id="article-container">
+    <div class="skeleton-wrap" style="padding:48px 56px">
+      <div class="sk-line" style="width:120px;height:24px;margin-bottom:20px"></div>
+      <div class="sk-line" style="width:90%;height:36px;margin-bottom:12px"></div>
+      <div class="sk-line" style="width:60%;height:36px;margin-bottom:24px"></div>
+      <div class="sk-line" style="width:100%;height:300px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="comments-section" id="comments-section" style="display:none">
+  <div class="comments-card">
+    <h2>Commentaires <span class="comment-count" id="comment-count"></span></h2>
+    <div id="comment-form-wrap"></div>
+    <div id="comments-list"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, addDoc, deleteDoc, updateDoc, setDoc,
+  collection, query, orderBy, onSnapshot, increment, arrayUnion, arrayRemove, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const FIREBASE_CONFIG={apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",authDomain:"videome-b7157.firebaseapp.com",projectId:"videome-b7157",storageBucket:"videome-b7157.appspot.com",messagingSenderId:"365500246890",appId:"1:365500246890:web:99423413909b9fcc631313"};
+const app=getApps().length?getApps()[0]:initializeApp(FIREBASE_CONFIG);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const container=document.getElementById("article-container");
+const articleId=new URLSearchParams(window.location.search).get("id");
+const $=id=>document.getElementById(id);
+let _user=null;
+let _articleData=null;
+let _articleLoaded=false;
+
+// ── Auth ──
+// onAuthStateChanged peut se déclencher AVANT que loadArticle() ait injecté le DOM.
+// On stocke l'état et on attend que l'article soit chargé avant de mettre à jour l'UI.
+onAuthStateChanged(auth, user => {
+  _user = user;
+  // Si l'article est déjà affiché, on met à jour l'UI immédiatement
+  if (_articleLoaded) {
+    renderCommentForm();
+    updateLikeBtn();
+    checkFav();
+  }
+  // Sinon, loadArticle() appellera ces fonctions lui-même après injection du DOM
+});
+
+// ── Rate limiting anti-spam : 1 commentaire toutes les 30 secondes ──
+const RATE_KEY = 'nactus_comment_ts';
+function canComment() { return Date.now() - parseInt(localStorage.getItem(RATE_KEY) || '0') > 30000; }
+function markComment() { localStorage.setItem(RATE_KEY, Date.now().toString()); }
+
+function esc(s){if(!s)return"";return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function catClass(c){return{Sport:'cat-sport',Éducation:'cat-edu',Politique:'cat-pol'}[c]||'cat-actu';}
+function catEmoji(c){return{Sport:'⚽',Éducation:'📚',Politique:'🏛️'}[c]||'📰';}
+
+function getEmbedUrl(url,type){
+  if(!url)return null;
+  if(!type||type==='youtube'||url.includes('youtube')||url.includes('youtu.be')){
+    const m=url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
+    return m?`https://www.youtube.com/embed/${m[1]}`:null;
+  }
+  if(type==='dailymotion'||url.includes('dailymotion')){
+    const m=url.match(/video\/([^_?/]+)/);
+    return m?`https://www.dailymotion.com/embed/video/${m[1]}`:null;
+  }
+  if(type==='facebook'||url.includes('facebook')){
+    return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false`;
+  }
+  return null;
+}
+
+function buildMedia(a){
+  if(a.imageUrl) return `<div class="article-media"><img src="${encodeURI(a.imageUrl)}" alt="${esc(a.title)}"></div>`;
+  if(a.videoUrl){
+    const embed=getEmbedUrl(a.videoUrl,a.videoType);
+    if(embed) return `<div class="article-media"><iframe src="${embed}" allowfullscreen loading="lazy"></iframe></div>`;
+    return `<div class="article-media"><video controls><source src="${encodeURI(a.videoUrl)}"></video></div>`;
+  }
+  return '';
+}
+
+function buildFile(a){
+  if(!a.fileUrl)return'';
+  const ext=(a.fileName||'').split('.').pop().toUpperCase()||'FILE';
+  return `<div class="file-attachment">
+    <div class="file-icon">📎</div>
+    <div class="file-info">
+      <strong>${esc(a.fileName||'Fichier joint')}</strong>
+      <span>Document · ${ext}</span>
+    </div>
+    <a class="file-dl" href="${encodeURI(a.fileUrl)}" target="_blank" rel="noopener" download>⬇ Télécharger</a>
+  </div>`;
+}
+
+function showError(msg){
+  container.innerHTML=`<div class="error-state"><h3>Article introuvable</h3><p>${msg||"Cet article n'existe pas ou a été supprimé."}</p><a href="index.html" class="btn-back">← Retour à l'accueil</a></div>`;
+}
+
+// ══ FAVORIS (stockés dans Firestore, liés au compte — synchronisés entre appareils) ══
+function favId() { return _user ? `${_user.uid}_${articleId}` : null; }
+let _isFav = false;
+
+async function checkFav() {
+  if (!_user || !articleId) { _isFav = false; updateFavBtn(); return; }
+  try {
+    const snap = await getDoc(doc(db, 'favorites', favId()));
+    _isFav = snap.exists();
+  } catch(e) { _isFav = false; }
+  updateFavBtn();
+}
+
+async function toggleFav() {
+  if (!_user) { window.NACTUS?.toast('🔐 Connectez-vous pour sauvegarder cet article'); return; }
+  const btn = $('fav-btn');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  try {
+    if (_isFav) {
+      await deleteDoc(doc(db, 'favorites', favId()));
+      _isFav = false;
+      window.NACTUS?.toast('🗑️ Retiré des favoris');
+    } else {
+      await setDoc(doc(db, 'favorites', favId()), {
+        uid: _user.uid, articleId, title: _articleData?.title || '',
+        category: _articleData?.category || '', imageUrl: _articleData?.imageUrl || null,
+        savedAt: serverTimestamp()
+      });
+      _isFav = true;
+      window.NACTUS?.toast('🔖 Article sauvegardé !');
+    }
+    updateFavBtn();
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+  btn.disabled = false;
+}
+function updateFavBtn() {
+  const btn = $('fav-btn');
+  if (!btn) return;
+  btn.classList.toggle('bookmarked', _isFav);
+  btn.innerHTML = _isFav ? '🔖 Sauvegardé' : '🔖 Sauvegarder';
+}
+window._toggleFav = toggleFav;
+
+// ══ LIKES (sur le document article lui-même) ══
+function updateLikeBtn() {
+  const btn = $('like-btn');
+  if (!btn || !_articleData) return;
+  const liked = _user && (_articleData.likedBy || []).includes(_user.uid);
+  btn.classList.toggle('liked', liked);
+  btn.innerHTML = `${liked ? '❤️' : '🤍'} ${_articleData.likes || 0}`;
+}
+async function toggleLike() {
+  if (!_user) { window.NACTUS?.toast('🔐 Connectez-vous pour aimer cet article'); return; }
+  const btn = $('like-btn');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  const liked = btn.classList.contains('liked');
+  try {
+    await updateDoc(doc(db, 'articles', articleId), {
+      likes: increment(liked ? -1 : 1),
+      likedBy: liked ? arrayRemove(_user.uid) : arrayUnion(_user.uid)
+    });
+    if (_articleData) {
+      _articleData.likes = (_articleData.likes || 0) + (liked ? -1 : 1);
+      _articleData.likedBy = liked
+        ? (_articleData.likedBy || []).filter(u => u !== _user.uid)
+        : [...(_articleData.likedBy || []), _user.uid];
+    }
+    updateLikeBtn();
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+  btn.disabled = false;
+}
+window._toggleLike = toggleLike;
+
+async function loadArticle(){
+  if(!articleId){showError("Aucun identifiant d'article fourni dans le lien.");return;}
+  try{
+    const snap=await getDoc(doc(db,"articles",articleId));
+    if(!snap.exists()){showError();return;}
+    const a=snap.data();
+    _articleData = { id: snap.id, ...a };
+    if((a.status||'publié')==='brouillon'){showError("Cet article n'est pas encore publié.");return;}
+    const cat=a.category||'Actualité';
+    document.title=`${a.title||'Article'} — NACTUS`;
+    document.getElementById('bc-cat').textContent=cat;
+
+    let dateStr='';
+    if(a.date){
+      const ts=a.date.toDate?a.date.toDate():new Date(a.date);
+      dateStr=ts.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+    }
+
+    // Le contenu peut être soit du HTML (nouveaux articles rédigés avec l'éditeur Quill,
+    // déjà nettoyé par DOMPurify côté admin) soit du texte brut (anciens articles).
+    // On détecte le format et on affiche en conséquence, en re-nettoyant le HTML par sécurité.
+    const rawContent = a.content || '';
+    const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(rawContent);
+    let lead = '', rest = '';
+
+    if (looksLikeHtml) {
+      let safeHtml = rawContent;
+      if (window.DOMPurify) {
+        DOMPurify.addHook('uponSanitizeAttribute', (node, data) => {
+          if (data.attrName === 'style') {
+            const allowedProps = /^(color|background-color)\s*:\s*[^;]+;?$/i;
+            const decls = data.attrValue.split(';').map(s => s.trim()).filter(Boolean);
+            data.attrValue = decls.filter(d => allowedProps.test(d + ';')).join('; ');
+          }
+        });
+        safeHtml = DOMPurify.sanitize(rawContent, {
+          ALLOWED_TAGS: [
+            'b','i','em','strong','u','s','a','p','br','span','div',
+            'h1','h2','h3','h4','h5','h6',
+            'ul','ol','li','blockquote','pre','code',
+            'sub','sup','img'
+          ],
+          ALLOWED_ATTR: ['href','target','rel','class','style','src','alt']
+        });
+        DOMPurify.removeHook('uponSanitizeAttribute');
+      }
+      // Le premier <p> sert d'accroche (lead), le reste suit normalement
+      const tmp = document.createElement('div');
+      tmp.innerHTML = safeHtml;
+      const firstP = tmp.querySelector('p');
+      if (firstP) {
+        lead = firstP.innerHTML;
+        firstP.remove();
+        rest = tmp.innerHTML;
+      } else {
+        rest = safeHtml;
+      }
+    } else {
+      const paras = rawContent.split(/\n+/).filter(p => p.trim());
+      lead = esc(paras[0] || '');
+      rest = paras.slice(1).map(p => `<p>${esc(p)}</p>`).join('');
+    }
+
+    const pageUrl=encodeURIComponent(window.location.href);
+    const titleEnc=encodeURIComponent(a.title||'');
+
+    container.innerHTML=`
+      <div class="article-head">
+        <span class="cat-badge ${catClass(cat)}">${catEmoji(cat)} ${esc(cat)}</span>
+        <h1>${esc(a.title)}</h1>
+        <div class="article-meta">
+          ${dateStr?`<span class="meta-item">📅 ${dateStr}</span>`:''}
+          <span class="meta-item">📂 ${esc(cat)}</span>
+        </div>
+      </div>
+      ${buildMedia(a)}
+      <div class="actions-bar">
+        <button class="action-btn" id="like-btn" onclick="window._toggleLike()">🤍 ${a.likes||0}</button>
+        <button class="action-btn" id="fav-btn" onclick="window._toggleFav()">🔖 Sauvegarder</button>
+      </div>
+      <div class="article-body">
+        ${lead?`<p class="lead">${lead}</p>`:''}
+        ${rest?`<div class="content">${rest}</div>`:''}
+      </div>
+      ${buildFile(a)}
+      <div class="article-footer">
+        <a href="index.html" class="btn-back">← Retour à l'accueil</a>
+        <div class="share-group">
+          <span class="share-label">Partager</span>
+          <a class="share-btn share-wa" href="https://wa.me/?text=${titleEnc}%20${pageUrl}" target="_blank" rel="noopener" title="WhatsApp">💬</a>
+          <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" rel="noopener" title="Facebook">f</a>
+          <a class="share-btn share-x" href="https://twitter.com/intent/tweet?text=${titleEnc}&url=${pageUrl}" target="_blank" rel="noopener" title="X">𝕏</a>
+        </div>
+      </div>`;
+
+    updateLikeBtn();
+    checkFav();
+    $('comments-section').style.display = 'block';
+    renderCommentForm();
+    loadComments();
+    _articleLoaded = true; // signale que le DOM est prêt pour les mises à jour auth
+  }catch(e){
+    console.error(e);
+    showError("Une erreur est survenue lors du chargement de l'article.");
+  }
+}
+
+// ══ COMMENTAIRES (sous-collection articles/{id}/comments) ══
+function renderCommentForm() {
+  const wrap = $('comment-form-wrap');
+  if (!wrap) return;
+  if (_user) {
+    wrap.innerHTML = `<div class="comment-form">
+      <textarea id="comment-input" placeholder="Partagez votre avis sur cet article..." maxlength="1000"></textarea>
+      <div class="comment-form-footer">
+        <small id="comment-chars">0 / 1000</small>
+        <button class="comment-submit" id="comment-btn">💬 Publier</button>
+      </div>
+    </div>`;
+    $('comment-input').addEventListener('input', e => {
+      $('comment-chars').textContent = `${e.target.value.length} / 1000`;
+    });
+    $('comment-btn').addEventListener('click', submitComment);
+  } else {
+    wrap.innerHTML = `<div class="login-prompt">Vous devez <a href="login.html">vous connecter</a> pour laisser un commentaire.</div>`;
+  }
+}
+
+async function submitComment() {
+  if (!_user || !articleId) return;
+  const input = $('comment-input');
+  const text = (input?.value || '').trim();
+  if (!text) { window.NACTUS?.toast('✏️ Écrivez un commentaire'); return; }
+  if (text.length > 1000) { window.NACTUS?.toast('❌ Commentaire trop long (max 1000 caractères)'); return; }
+  if (!canComment()) { window.NACTUS?.toast('⏳ Attendez 30 secondes entre deux commentaires'); return; }
+
+  const btn = $('comment-btn');
+  if (btn) btn.disabled = true;
+  try {
+    // DOMPurify neutralise tout balisage : un commentaire est toujours du texte pur.
+    const clean = window.DOMPurify ? DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }) : text;
+    await addDoc(collection(db, 'articles', articleId, 'comments'), {
+      text: clean,
+      uid: _user.uid,
+      displayName: _user.displayName || 'Utilisateur',
+      photoURL: _user.photoURL || '',
+      date: serverTimestamp(),
+      likes: 0,
+      likedBy: []
+    });
+    markComment();
+    if (input) input.value = '';
+    const chars = $('comment-chars');
+    if (chars) chars.textContent = '0 / 1000';
+    window.NACTUS?.toast('✅ Commentaire publié !');
+  } catch(e) {
+    window.NACTUS?.toast('❌ ' + e.message);
+  }
+  if (btn) btn.disabled = false;
+}
+
+function loadComments() {
+  if (!articleId) return;
+  onSnapshot(query(collection(db, 'articles', articleId, 'comments'), orderBy('date', 'desc')), snap => {
+    const cc = $('comment-count');
+    if (cc) cc.textContent = snap.size ? `(${snap.size})` : '';
+    const list = $('comments-list');
+    if (!list) return;
+    if (snap.empty) {
+      list.innerHTML = `<div class="comments-empty">Soyez le premier à commenter cet article !</div>`;
+      return;
+    }
+    list.innerHTML = snap.docs.map(d => {
+      const c = d.data();
+      const likedByMe = _user && (c.likedBy || []).includes(_user.uid);
+      const isOwner = _user && c.uid === _user.uid;
+      let ds = '';
+      if (c.date?.toDate) ds = c.date.toDate().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+      const av = c.photoURL
+        ? `<img src="${esc(c.photoURL)}" alt="">`
+        : esc((c.displayName || 'U')[0].toUpperCase());
+      return `<div class="comment-item">
+        <div class="comment-avatar">${av}</div>
+        <div class="comment-body">
+          <div class="comment-header">
+            <span class="comment-author">${esc(c.displayName || 'Utilisateur')}</span>
+            <span class="comment-date">${ds}</span>
+          </div>
+          <div class="comment-text">${esc(c.text)}</div>
+          <div class="comment-actions">
+            <button class="cmt-btn${likedByMe ? ' liked' : ''}" onclick="window._likeComment('${d.id}',${likedByMe})">❤️ ${c.likes || 0}</button>
+            ${isOwner ? `<button class="cmt-btn" onclick="window._delComment('${d.id}')">🗑️ Supprimer</button>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+window._likeComment = async (id, liked) => {
+  if (!_user) { window.NACTUS?.toast('🔐 Connectez-vous pour aimer un commentaire'); return; }
+  try {
+    await updateDoc(doc(db, 'articles', articleId, 'comments', id), {
+      likes: increment(liked ? -1 : 1),
+      likedBy: liked ? arrayRemove(_user.uid) : arrayUnion(_user.uid)
+    });
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+};
+window._delComment = async (id) => {
+  if (!_user) return;
+  if (!confirm('Supprimer ce commentaire ?')) return;
+  try {
+    await deleteDoc(doc(db, 'articles', articleId, 'comments', id));
+    window.NACTUS?.toast('🗑️ Commentaire supprimé');
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+};
+
+loadArticle();
+</script>
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Télécharger le document</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#fff;
+  --card:#fff;--border:#e2e8f0;--accent:#e85d26;--accent2:#f5a623;
+  --accent-grd:linear-gradient(135deg,#e85d26,#f5a623);
+  --green:#16a34a;--radius:14px;--shadow:0 4px 24px rgba(11,15,26,.08);
+  --t:all .28s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"]{
+  --ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;
+  --white:#161b27;--card:#1e2435;--border:#2d3a52;--shadow:0 4px 24px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;transition:background .3s,color .3s;min-height:100vh}
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:0 24px;height:68px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:var(--accent-grd);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:#fff;font-size:16px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:900;font-size:20px;color:var(--ink)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:7px 14px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;transition:var(--t)}
+.nav-links a:hover,.nav-links a.active{background:rgba(232,93,38,.08);color:var(--accent)}
+
+/* ── LAYOUT ── */
+.page{max-width:1000px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start}
+@media(max-width:780px){.page{grid-template-columns:1fr;padding:24px 16px 60px}}
+
+/* ── DOCUMENT CARD ── */
+.doc-card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.doc-cover{aspect-ratio:16/7;background:linear-gradient(135deg,#d1fae5,#6ee7b7);display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden}
+.doc-cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.doc-cover .doc-icon{position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2))}
+.doc-body{padding:28px}
+.doc-category{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;background:#d1fae5;color:#047857;margin-bottom:14px}
+.doc-body h1{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-bottom:18px;flex-wrap:wrap}
+.doc-meta span{display:flex;align-items:center;gap:5px}
+.doc-desc{color:var(--ink-soft);font-size:14px;line-height:1.7;margin-bottom:20px}
+.doc-preview{background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border)}
+.doc-preview h4{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--ink)}
+.doc-preview ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.doc-preview ul li{font-size:13px;color:var(--ink-soft);display:flex;align-items:center;gap:8px}
+.doc-preview ul li::before{content:'📄';font-size:11px}
+.doc-locked{opacity:.5;font-style:italic}
+.doc-locked::before{content:'🔒 '!important}
+
+/* ── PAYMENT CARD ── */
+.pay-card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);position:sticky;top:88px}
+.pay-head{padding:24px 24px 0}
+.pay-head h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.pay-head p{font-size:13px;color:var(--muted)}
+
+/* ── MODE (unité/abonnement) ── */
+.pay-mode{display:flex;gap:8px;padding:16px 24px;border-bottom:1px solid var(--border)}
+.mode-btn{flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:var(--bg);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:var(--t);text-align:center}
+.mode-btn.active{border-color:#10b981;background:#f0fdf4;color:#065f46}
+[data-theme="dark"] .mode-btn.active{background:rgba(16,185,129,.15);color:#34d399}
+
+/* ── PRIX ── */
+.pay-price{padding:20px 24px;border-bottom:1px solid var(--border)}
+.price-main{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+.price-amount{font-size:2.2rem;font-weight:800;color:var(--ink);font-family:'Playfair Display',serif}
+.price-currency{font-size:1rem;font-weight:600;color:var(--muted)}
+.price-period{font-size:13px;color:var(--muted)}
+.price-compare{font-size:12px;color:var(--muted);text-decoration:line-through;margin-left:8px}
+.price-badge{display:inline-block;padding:3px 10px;border-radius:20px;background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;margin-top:6px}
+.perks{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.perks li{font-size:13px;color:var(--ink-soft);display:flex;align-items:center;gap:8px}
+.perks li::before{content:'✅';font-size:12px}
+
+/* ── MÉTHODES DE PAIEMENT ── */
+.pay-methods{padding:20px 24px;border-bottom:1px solid var(--border)}
+.pay-methods h3{font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.method-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:2px solid var(--border);background:var(--bg);cursor:pointer;transition:var(--t);font-family:inherit}
+.method-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.method-btn.selected{border-color:var(--accent);background:rgba(232,93,38,.06)}
+.method-logo{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.method-info{min-width:0}
+.method-name{font-size:12px;font-weight:700;color:var(--ink);display:block}
+.method-sub{font-size:10px;color:var(--muted)}
+/* Couleurs des logos */
+.ml-orange{background:#ff6b00}.ml-wave{background:#1d71f0}.ml-moov{background:#e20000}
+.ml-mtn{background:#ffc107}.ml-visa{background:#1a1f71}.ml-card{background:#2563eb}
+.ml-paypal{background:#003087}.ml-stripe{background:#635bff}
+
+/* ── FORMULAIRE TÉLÉPHONE ── */
+.pay-form{padding:16px 24px;border-bottom:1px solid var(--border);display:none}
+.pay-form.visible{display:block}
+.form-label{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;display:block}
+.phone-wrap{display:flex;gap:8px}
+.country-code{width:80px;padding:11px 8px;border:1.5px solid var(--border);border-radius:9px;background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit;cursor:pointer}
+.phone-input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit}
+.phone-input:focus,.country-code:focus{outline:none;border-color:var(--accent)}
+.card-fields{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.card-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit}
+.card-input:focus{outline:none;border-color:var(--accent)}
+.card-row{display:flex;gap:8px}
+.card-row .card-input{flex:1}
+
+/* ── CTA ── */
+.pay-cta{padding:16px 24px 24px}
+.pay-btn{width:100%;padding:15px;background:var(--accent-grd);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:var(--t);box-shadow:0 6px 20px rgba(232,93,38,.3);display:flex;align-items:center;justify-content:center;gap:10px}
+.pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(232,93,38,.45)}
+.pay-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.pay-security{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font-size:11px;color:var(--muted)}
+.pay-logos{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.pay-logos span{font-size:11px;color:var(--muted);background:var(--bg);padding:3px 10px;border-radius:20px;border:1px solid var(--border)}
+
+/* ── MESSAGE DE STATUT ── */
+.status-msg{padding:12px 14px;border-radius:10px;font-size:14px;font-weight:600;margin:0 24px 16px;display:none;text-align:center}
+.status-msg.success{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;display:block}
+.status-msg.error{background:#fff5f5;color:#dc2626;border:1px solid #fecaca;display:block}
+.status-msg.info{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;display:block}
+
+/* ── MODAL SUCCÈS ── */
+.success-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(8px)}
+.success-overlay.on{display:flex}
+.success-card{background:var(--card);border-radius:24px;padding:48px 36px;max-width:420px;width:92%;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.3)}
+.success-icon{font-size:4rem;margin-bottom:20px}
+.success-card h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;margin-bottom:10px}
+.success-card p{color:var(--muted);font-size:14px;margin-bottom:28px;line-height:1.6}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent-grd);color:#fff;padding:15px 32px;border-radius:30px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(232,93,38,.3);transition:var(--t);cursor:pointer;border:none;font-family:inherit}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(232,93,38,.45)}
+
+/* ── LOGIN REQUIRED ── */
+.login-required{background:var(--card);border-radius:20px;padding:40px;text-align:center;box-shadow:var(--shadow)}
+.login-required .icon{font-size:3rem;margin-bottom:16px}
+.login-required h3{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:10px}
+.login-required p{color:var(--muted);font-size:14px;margin-bottom:24px}
+.auth-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-login{padding:12px 24px;background:var(--accent-grd);color:#fff;border:none;border-radius:30px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+.btn-register{padding:12px 24px;background:var(--bg);color:var(--ink);border:1.5px solid var(--border);border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="education.html" class="active">Éducation</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Modal succès / téléchargement -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <h2>Paiement confirmé !</h2>
+    <p id="success-msg">Votre document est prêt. Cliquez pour télécharger.</p>
+    <button class="dl-btn" id="dl-btn">⬇️ Télécharger le document</button>
+    <p style="margin-top:16px;font-size:12px;color:var(--muted)">
+      Le lien est valable 24 heures.
+    </p>
+  </div>
+</div>
+
+<div class="page" id="page-content">
+
+  <!-- ── COLONNE GAUCHE : infos du document ── -->
+  <div>
+    <div class="doc-card" id="doc-card">
+      <div class="doc-cover">
+        <span class="doc-icon" id="doc-emoji">📚</span>
+      </div>
+      <div class="doc-body">
+        <span class="doc-category">Éducation</span>
+        <h1 id="doc-title">Chargement...</h1>
+        <div class="doc-meta">
+          <span>📄 <span id="doc-pages">—</span> pages</span>
+          <span>📦 <span id="doc-size">—</span></span>
+          <span>🗓️ <span id="doc-date">—</span></span>
+        </div>
+        <p class="doc-desc" id="doc-desc">Chargement de la description...</p>
+        <div class="doc-preview">
+          <h4>Contenu du document</h4>
+          <ul id="doc-toc">
+            <li>Chargement...</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COLONNE DROITE : paiement ── -->
+  <div id="pay-panel">
+    <!-- Affiché si non connecté -->
+    <div class="login-required" id="login-required" style="display:none">
+      <div class="icon">🔐</div>
+      <h3>Connexion requise</h3>
+      <p>Créez un compte gratuit ou connectez-vous pour accéder au paiement.</p>
+      <div class="auth-btns">
+        <a href="login.html?redirect=paiement" class="btn-login">Se connecter</a>
+        <a href="auth.html?redirect=paiement" class="btn-register">Créer un compte</a>
+      </div>
+    </div>
+
+    <!-- Affiché si déjà acheté -->
+    <div class="doc-card" id="already-purchased" style="display:none">
+      <div style="padding:32px;text-align:center">
+        <div style="font-size:3rem;margin-bottom:16px">✅</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:8px">Déjà acheté</h3>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:20px">Vous avez déjà accès à ce document.</p>
+        <button class="dl-btn" id="redownload-btn">⬇️ Télécharger à nouveau</button>
+      </div>
+    </div>
+
+    <!-- Formulaire de paiement principal -->
+    <div class="pay-card" id="pay-card" style="display:none">
+      <div class="pay-head">
+        <h2>Accéder au document</h2>
+        <p>Choisissez votre mode d'accès et de paiement</p>
+      </div>
+
+      <!-- Unité ou abonnement -->
+      <div class="pay-mode">
+        <button class="mode-btn active" data-mode="unit" id="mode-unit">
+          📄 À l'unité
+        </button>
+        <button class="mode-btn" data-mode="sub" id="mode-sub">
+          ♾️ Abonnement
+        </button>
+      </div>
+
+      <!-- Prix -->
+      <div class="pay-price" id="pay-price">
+        <div class="price-main">
+          <span class="price-amount" id="price-amount">500</span>
+          <span class="price-currency">FCFA</span>
+          <span class="price-compare" id="price-compare"></span>
+        </div>
+        <div class="price-period" id="price-period">accès permanent à ce document</div>
+        <ul class="perks" id="perks-list">
+          <li>Téléchargement immédiat</li>
+          <li>Accès permanent</li>
+          <li>Document complet (non tronqué)</li>
+        </ul>
+      </div>
+
+      <!-- Méthodes de paiement -->
+      <div class="pay-methods">
+        <h3>Mode de paiement</h3>
+        <div class="methods-grid">
+          <button class="method-btn selected" data-method="orange_money">
+            <div class="method-logo ml-orange">🟠</div>
+            <div class="method-info">
+              <span class="method-name">Orange Money</span>
+              <span class="method-sub">BF · CI · ML · SN</span>
+            </div>
+          </button>
+          <button class="method-btn" data-method="wave">
+            <div class="method-logo ml-wave">🌊</div>
+            <div class="method-info">
+              <span class="method-name">Wave</span>
+              <span class="method-sub">BF · CI · SN · ML</span>
+            </div>
+          </button>
+          <button class="method-btn" data-method="moov_money">
+            <div class="method-logo ml-moov">🔴</div>
+            <div class="method-info">
+              <span class="method-name">Moov Money</span>
+              <span class="method-sub">BF · CI · ML</span>
+            </div>
+          </button>
+          <button class="method-btn" data-method="mtn_money">
+            <div class="method-logo ml-mtn">🟡</div>
+            <div class="method-info">
+              <span class="method-name">MTN Money</span>
+              <span class="method-sub">CI · CM · BJ</span>
+            </div>
+          </button>
+          <button class="method-btn" data-method="card">
+            <div class="method-logo ml-card">💳</div>
+            <div class="method-info">
+              <span class="method-name">Carte bancaire</span>
+              <span class="method-sub">Visa · Mastercard</span>
+            </div>
+          </button>
+          <button class="method-btn" data-method="paypal">
+            <div class="method-logo ml-paypal">🅿️</div>
+            <div class="method-info">
+              <span class="method-name">PayPal</span>
+              <span class="method-sub">International</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Champs dynamiques selon méthode -->
+      <div class="pay-form" id="form-mobile">
+        <label class="form-label">Numéro de téléphone</label>
+        <div class="phone-wrap">
+          <select class="country-code" id="country-code">
+            <option value="226">🇧🇫 +226</option>
+            <option value="225">🇨🇮 +225</option>
+            <option value="221">🇸🇳 +221</option>
+            <option value="223">🇲🇱 +223</option>
+            <option value="229">🇧🇯 +229</option>
+            <option value="237">🇨🇲 +237</option>
+          </select>
+          <input type="tel" class="phone-input" id="phone-input"
+                 placeholder="70 00 00 00" maxlength="10">
+        </div>
+      </div>
+
+      <div class="pay-form" id="form-card" style="display:none">
+        <label class="form-label">Informations de carte</label>
+        <div class="card-fields">
+          <input class="card-input" type="text" id="card-name"
+                 placeholder="Nom sur la carte" autocomplete="cc-name">
+          <input class="card-input" type="text" id="card-number"
+                 placeholder="1234 5678 9012 3456" maxlength="19"
+                 autocomplete="cc-number">
+          <div class="card-row">
+            <input class="card-input" type="text" id="card-expiry"
+                   placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
+            <input class="card-input" type="text" id="card-cvv"
+                   placeholder="CVV" maxlength="4" autocomplete="cc-csc">
+          </div>
+        </div>
+      </div>
+
+      <!-- Message de statut -->
+      <div class="status-msg" id="status-msg"></div>
+
+      <!-- Bouton payer -->
+      <div class="pay-cta">
+        <button class="pay-btn" id="pay-btn">
+          <span id="pay-btn-icon">💳</span>
+          <span id="pay-btn-text">Payer 500 FCFA</span>
+        </button>
+        <div class="pay-security">
+          🔒 Paiement 100% sécurisé
+        </div>
+        <div class="pay-logos">
+          <span>CinetPay</span>
+          <span>PayDunya</span>
+          <span>Stripe</span>
+          <span>SSL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, query,
+  where, getDocs
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const CFG = {
+  apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",
+  authDomain:"videome-b7157.firebaseapp.com",
+  projectId:"videome-b7157",
+  storageBucket:"videome-b7157.appspot.com",
+  messagingSenderId:"365500246890",
+  appId:"1:365500246890:web:99423413909b9fcc631313"
+};
+const app  = getApps().length ? getApps()[0] : initializeApp(CFG);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const $    = id => document.getElementById(id);
+
+// ── Paramètres URL ──────────────────────────────────────────────
+const params    = new URLSearchParams(window.location.search);
+const articleId = params.get('id');
+const esc = s => (s||'').replace(/[&<>"']/g,
+  m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+// ── State ───────────────────────────────────────────────────────
+let _user         = null;
+let _article      = null;
+let _mode         = 'unit';   // 'unit' | 'sub'
+let _method       = 'orange_money';
+let _prices       = { unit: 500, sub: 2000 };
+let _txId         = null;     // ID de transaction en cours
+let _pollInterval = null;
+
+const METHODS_MOBILE = ['orange_money','wave','moov_money','mtn_money'];
+const METHOD_ICONS   = {
+  orange_money:'🟠', wave:'🌊', moov_money:'🔴', mtn_money:'🟡',
+  card:'💳', paypal:'🅿️'
+};
+
+// ── Charge l'article depuis Firestore ───────────────────────────
+async function loadDoc() {
+  if (!articleId) { showError('ID de document manquant dans l\'URL.'); return; }
+  try {
+    const snap = await getDoc(doc(db, 'articles', articleId));
+    if (!snap.exists() || snap.data().status !== 'publié') {
+      showError('Document introuvable ou non publié.');
+      return;
+    }
+    _article = { id: snap.id, ...snap.data() };
+    renderDoc(_article);
+    // Le prix peut être défini dans Firestore (champ "price") ou par défaut
+    if (_article.price)    _prices.unit = _article.price;
+    if (_article.subPrice) _prices.sub  = _article.subPrice;
+    updatePriceUI();
+  } catch(e) {
+    showError('Erreur de chargement : ' + e.message);
+  }
+}
+
+function renderDoc(a) {
+  document.title = `Télécharger : ${a.title} — NACTUS`;
+  $('doc-title').textContent = a.title || 'Document';
+  $('doc-desc').textContent  = a.plainText
+    ? a.plainText.substring(0, 300) + '...'
+    : 'Description non disponible.';
+
+  const dateStr = a.date?.toDate
+    ? a.date.toDate().toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'})
+    : '';
+  $('doc-date').textContent  = dateStr;
+  $('doc-pages').textContent = a.pages  || '—';
+  $('doc-size').textContent  = a.fileSize || (a.fileUrl ? 'PDF' : '—');
+
+  // Table des matières (champ optionnel "toc" dans Firestore)
+  if (a.toc && Array.isArray(a.toc)) {
+    $('doc-toc').innerHTML = a.toc.map((item, i) =>
+      `<li class="${i >= 2 ? 'doc-locked' : ''}">${esc(item)}</li>`
+    ).join('');
+  } else {
+    $('doc-toc').innerHTML = `
+      <li>Introduction</li>
+      <li>Contenu principal</li>
+      <li class="doc-locked">Suite disponible après achat</li>
+      <li class="doc-locked">Annexes et ressources</li>`;
+  }
+
+  // Image de couverture
+  if (a.imageUrl) {
+    const cover = $('doc-emoji').parentNode;
+    const img = document.createElement('img');
+    img.src = encodeURI(a.imageUrl);
+    img.alt = esc(a.title);
+    cover.appendChild(img);
+  }
+}
+
+function showError(msg) {
+  $('doc-card').innerHTML = `
+    <div style="padding:60px;text-align:center">
+      <div style="font-size:3rem;margin-bottom:16px">❌</div>
+      <p style="color:var(--muted)">${esc(msg)}</p>
+      <a href="education.html" style="color:var(--accent);text-decoration:none;font-weight:600;margin-top:16px;display:inline-block">← Retour à Éducation</a>
+    </div>`;
+}
+
+// ── Auth state ──────────────────────────────────────────────────
+onAuthStateChanged(auth, async user => {
+  _user = user;
+  if (!user) {
+    $('login-required').style.display = 'block';
+    $('pay-card').style.display       = 'none';
+    $('already-purchased').style.display = 'none';
+    return;
+  }
+  // Vérifie si déjà acheté
+  const bought = await checkPurchase(user.uid);
+  if (bought) {
+    $('login-required').style.display    = 'none';
+    $('pay-card').style.display          = 'none';
+    $('already-purchased').style.display = 'block';
+    $('redownload-btn').addEventListener('click', () => triggerDownload(bought.fileUrl));
+    return;
+  }
+  $('login-required').style.display    = 'none';
+  $('already-purchased').style.display = 'none';
+  $('pay-card').style.display          = 'block';
+});
+
+async function checkPurchase(uid) {
+  if (!articleId) return null;
+  try {
+    const snap = await getDoc(doc(db, 'purchases', `${uid}_${articleId}`));
+    if (snap.exists()) return snap.data();
+    // Vérifie aussi abonnement actif
+    const subSnap = await getDoc(doc(db, 'subscriptions', uid));
+    if (subSnap.exists() && subSnap.data().status === 'active') {
+      const exp = subSnap.data().expiresAt?.toDate?.();
+      if (exp && exp > new Date()) return { fileUrl: _article?.fileUrl };
+    }
+  } catch(e) { /* ignore */ }
+  return null;
+}
+
+// ── Sélection mode (unité / abonnement) ─────────────────────────
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _mode = btn.dataset.mode;
+    updatePriceUI();
+  });
+});
+
+function updatePriceUI() {
+  const isSub = _mode === 'sub';
+  if (isSub) {
+    $('price-amount').textContent  = _prices.sub.toLocaleString('fr-FR');
+    $('price-period').textContent  = 'par mois — tous les documents éducation';
+    $('price-compare').textContent = (_prices.sub * 2).toLocaleString('fr-FR') + ' FCFA';
+    $('perks-list').innerHTML = `
+      <li>Accès illimité à TOUS les documents éducation</li>
+      <li>Nouveaux documents inclus automatiquement</li>
+      <li>Téléchargement offline</li>
+      <li>Annulation à tout moment</li>`;
+  } else {
+    $('price-amount').textContent  = _prices.unit.toLocaleString('fr-FR');
+    $('price-period').textContent  = 'accès permanent à ce document';
+    $('price-compare').textContent = '';
+    $('perks-list').innerHTML = `
+      <li>Téléchargement immédiat</li>
+      <li>Accès permanent</li>
+      <li>Document complet (non tronqué)</li>`;
+  }
+  updatePayBtn();
+}
+
+// ── Sélection méthode de paiement ──────────────────────────────
+document.querySelectorAll('.method-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    _method = btn.dataset.method;
+    updateFormVisibility();
+    updatePayBtn();
+  });
+});
+
+function updateFormVisibility() {
+  const isMobile = METHODS_MOBILE.includes(_method);
+  $('form-mobile').classList.toggle('visible', isMobile);
+  $('form-card').style.display  = (_method === 'card') ? 'block' : 'none';
+  $('form-mobile').style.display = isMobile ? 'block' : 'none';
+}
+
+function updatePayBtn() {
+  const price  = _mode === 'sub' ? _prices.sub : _prices.unit;
+  const icon   = METHOD_ICONS[_method] || '💳';
+  $('pay-btn-icon').textContent = icon;
+  $('pay-btn-text').textContent = `Payer ${price.toLocaleString('fr-FR')} FCFA`;
+}
+
+// Initialiser
+updateFormVisibility();
+
+// ── Formatage numéro de carte ───────────────────────────────────
+const cardNumber = $('card-number');
+if (cardNumber) {
+  cardNumber.addEventListener('input', e => {
+    e.target.value = e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().substring(0,19);
+  });
+}
+const cardExpiry = $('card-expiry');
+if (cardExpiry) {
+  cardExpiry.addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g,'');
+    if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+    e.target.value = v;
+  });
+}
+
+// ── PAIEMENT ────────────────────────────────────────────────────
+$('pay-btn').addEventListener('click', initiatePayment);
+
+async function initiatePayment() {
+  if (!_user) { setStatus('Veuillez vous connecter.', 'error'); return; }
+  if (!_article?.fileUrl) { setStatus('Document non disponible.', 'error'); return; }
+
+  // Validation selon méthode
+  if (METHODS_MOBILE.includes(_method)) {
+    const phone = $('phone-input').value.replace(/\s/g,'');
+    if (!phone || phone.length < 8) {
+      setStatus('Veuillez entrer un numéro de téléphone valide.', 'error'); return;
+    }
+  }
+  if (_method === 'card') {
+    if (!$('card-name').value || !$('card-number').value ||
+        !$('card-expiry').value || !$('card-cvv').value) {
+      setStatus('Veuillez remplir toutes les informations de carte.', 'error'); return;
+    }
+  }
+
+  const btn = $('pay-btn');
+  btn.disabled = true;
+  $('pay-btn-text').textContent = 'Traitement en cours...';
+  setStatus('Connexion au serveur de paiement...', 'info');
+
+  try {
+    const price   = _mode === 'sub' ? _prices.sub : _prices.unit;
+    const phone   = METHODS_MOBILE.includes(_method)
+      ? $('country-code').value + $('phone-input').value.replace(/\s/g,'')
+      : null;
+
+    // Appel à la Vercel Function backend
+    const res = await fetch('/api/initiate-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        method:    _method,
+        mode:      _mode,
+        amount:    price,
+        currency:  'XOF',
+        articleId: articleId,
+        uid:       _user.uid,
+        email:     _user.email,
+        phone:     phone,
+        returnUrl: window.location.href,
+        notifyUrl: `${window.location.origin}/api/payment-webhook`,
+        description: `${_mode === 'sub' ? 'Abonnement NACTUS' : 'Document'}: ${_article.title}`
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+    if (data.redirect_url) {
+      // CinetPay / PayDunya → redirection vers page de paiement externe
+      setStatus('Redirection vers la page de paiement sécurisée...', 'info');
+      window.location.href = data.redirect_url;
+
+    } else if (data.payment_url) {
+      // PayPal / Stripe → ouvrir dans une fenêtre
+      window.open(data.payment_url, '_blank', 'width=500,height=700');
+      setStatus('Fenêtre de paiement ouverte. Revenez ici après avoir payé.', 'info');
+      _txId = data.transaction_id;
+      startPolling(_txId);
+
+    } else if (data.status === 'pending') {
+      // Mobile Money → pousser USSD
+      _txId = data.transaction_id;
+      setStatus(`✅ Validation envoyée ! Confirmez sur votre téléphone (${phone}).`, 'info');
+      startPolling(_txId);
+    }
+
+  } catch(e) {
+    setStatus('❌ ' + (e.message || 'Erreur lors du paiement. Réessayez.'), 'error');
+    btn.disabled = false;
+    updatePayBtn();
+  }
+}
+
+// ── Polling : vérifie le statut du paiement toutes les 3s ──────
+function startPolling(txId) {
+  stopPolling();
+  let attempts = 0;
+  _pollInterval = setInterval(async () => {
+    attempts++;
+    if (attempts > 60) { // 3 minutes max
+      stopPolling();
+      setStatus('Délai dépassé. Si vous avez payé, le document sera disponible dans vos achats.', 'error');
+      $('pay-btn').disabled = false;
+      updatePayBtn();
+      return;
+    }
+    try {
+      const res  = await fetch(`/api/payment-status?txId=${txId}&uid=${_user.uid}`);
+      const data = await res.json();
+      if (data.status === 'completed') {
+        stopPolling();
+        onPaymentSuccess(data);
+      } else if (data.status === 'failed') {
+        stopPolling();
+        setStatus('❌ Paiement échoué ou annulé. Réessayez.', 'error');
+        $('pay-btn').disabled = false;
+        updatePayBtn();
+      }
+    } catch(e) { /* silencieux */ }
+  }, 3000);
+}
+
+function stopPolling() {
+  if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null; }
+}
+
+async function onPaymentSuccess(data) {
+  // Enregistre l'achat dans Firestore (le webhook serveur le fait aussi, ceci est un double)
+  if (_mode === 'unit') {
+    await setDoc(doc(db, 'purchases', `${_user.uid}_${articleId}`), {
+      uid: _user.uid, articleId,
+      fileUrl:   _article.fileUrl,
+      paidAt:    serverTimestamp(),
+      amount:    _mode === 'unit' ? _prices.unit : _prices.sub,
+      method:    _method,
+      transactionId: data.transaction_id
+    });
+  }
+  $('success-msg').textContent = _mode === 'sub'
+    ? 'Votre abonnement est actif. Téléchargez ce document et tous les suivants !'
+    : 'Votre achat est confirmé. Téléchargez votre document maintenant !';
+  $('success-overlay').classList.add('on');
+  $('dl-btn').addEventListener('click', () => triggerDownload(_article.fileUrl), { once: true });
+}
+
+function triggerDownload(url) {
+  if (!url) { setStatus('URL de téléchargement non disponible.', 'error'); return; }
+  const a = document.createElement('a');
+  a.href = encodeURI(url);
+  a.download = (_article?.title || 'document').replace(/[^a-zA-Z0-9]/g,'_') + '.pdf';
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+$('redownload-btn')?.addEventListener('click', () => {
+  if (_article?.fileUrl) triggerDownload(_article.fileUrl);
+  else setStatus('Fichier non disponible. Contactez le support.', 'error');
+});
+
+function setStatus(msg, type) {
+  const el = $('status-msg');
+  el.textContent = msg;
+  el.className = `status-msg ${type}`;
+}
+
+// ── Init ────────────────────────────────────────────────────────
+loadDoc();
+</script>
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>
