@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Article</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+<style>
+:root{--ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#ffffff;--accent:#e85d26;--accent2:#f5a623;--blue:#1a56db;--radius:14px;--shadow:0 4px 24px rgba(11,15,26,0.08);--transition:all 0.28s cubic-bezier(0.4,0,0.2,1)}
+[data-theme="dark"]{--ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;--white:#161b27;--shadow:0 4px 24px rgba(0,0,0,.35)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:16px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--ink);letter-spacing:1px}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--ink-soft);font-size:14px;font-weight:500;transition:var(--transition)}
+.nav-links a:hover{background:rgba(232,93,38,0.08);color:var(--accent)}
+
+.breadcrumb{max-width:860px;margin:28px auto 0;padding:0 20px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.breadcrumb a{color:var(--muted);text-decoration:none;transition:var(--transition)}
+.breadcrumb a:hover{color:var(--accent)}
+.breadcrumb span{color:var(--muted);opacity:.5}
+
+.article-outer{max-width:860px;margin:32px auto 80px;padding:0 20px}
+.article-card{background:var(--white);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;transition:background .3s}
+
+.article-head{padding:48px 56px 36px}
+.cat-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:30px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:20px}
+.cat-sport{background:#fef3c7;color:#b45309}
+.cat-edu{background:#d1fae5;color:#047857}
+.cat-pol{background:#ede9fe;color:#6d28d9}
+.cat-actu{background:#e0e7ff;color:#3730a3}
+.article-head h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;line-height:1.2;color:var(--ink);margin-bottom:20px}
+.article-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding-top:16px;border-top:1px solid rgba(0,0,0,0.06)}
+[data-theme="dark"] .article-meta{border-top-color:rgba(255,255,255,0.08)}
+.meta-item{display:flex;align-items:center;gap:5px}
+
+.article-media{width:100%;overflow:hidden;background:#e2e8f0;max-height:500px}
+.article-media img{width:100%;max-height:500px;object-fit:cover;display:block}
+.article-media iframe{width:100%;height:460px;display:block;border:0}
+.article-media video{width:100%;max-height:460px;display:block}
+
+.article-body{padding:44px 56px 52px}
+.article-body .lead{font-size:1.18rem;font-weight:500;color:var(--ink-soft);line-height:1.75;margin-bottom:28px;padding-bottom:28px;border-bottom:2px solid rgba(0,0,0,0.06)}
+[data-theme="dark"] .article-body .lead{border-bottom-color:rgba(255,255,255,0.08)}
+.article-body .content{font-family:'Lora',serif;font-size:1.08rem;line-height:1.9;color:var(--ink-soft)}
+.article-body .content p{margin-bottom:22px}
+.article-body .content p:last-child{margin-bottom:0}
+
+/* Classes générées par l'éditeur Quill (admin) — nécessaires pour un rendu fidèle */
+.article-body .content .ql-size-10px,.article-body .lead.ql-size-10px{font-size:10px}
+.article-body .content .ql-size-12px,.article-body .lead.ql-size-12px{font-size:12px}
+.article-body .content .ql-size-14px,.article-body .lead.ql-size-14px{font-size:14px}
+.article-body .content .ql-size-16px,.article-body .lead.ql-size-16px{font-size:16px}
+.article-body .content .ql-size-18px,.article-body .lead.ql-size-18px{font-size:18px}
+.article-body .content .ql-size-24px,.article-body .lead.ql-size-24px{font-size:24px}
+.article-body .content .ql-size-32px,.article-body .lead.ql-size-32px{font-size:32px}
+.article-body .content .ql-size-48px,.article-body .lead.ql-size-48px{font-size:48px}
+.article-body .content .ql-font-arial{font-family:Arial,sans-serif}
+.article-body .content .ql-font-times-new-roman{font-family:'Times New Roman',serif}
+.article-body .content .ql-font-courier-new{font-family:'Courier New',monospace}
+.article-body .content .ql-font-georgia{font-family:Georgia,serif}
+.article-body .content .ql-font-verdana{font-family:Verdana,sans-serif}
+.article-body .content .ql-font-tahoma{font-family:Tahoma,sans-serif}
+.article-body .content .ql-font-trebuchet-ms{font-family:'Trebuchet MS',sans-serif}
+.article-body .content .ql-font-garamond{font-family:Garamond,serif}
+.article-body .content .ql-font-helvetica{font-family:Helvetica,Arial,sans-serif}
+.article-body .content .ql-font-impact{font-family:Impact,'Arial Narrow Bold',sans-serif}
+.article-body .content .ql-font-comic-sans{font-family:'Comic Sans MS','Comic Sans',cursive}
+.article-body .content .ql-font-roboto{font-family:'Roboto',sans-serif}
+.article-body .content .ql-font-montserrat{font-family:'Montserrat',sans-serif}
+.article-body .content .ql-font-lato{font-family:'Lato',sans-serif}
+.article-body .content .ql-font-open-sans{font-family:'Open Sans',sans-serif}
+.article-body .content .ql-font-merriweather{font-family:'Merriweather',serif}
+.article-body .content .ql-font-playfair-display{font-family:'Playfair Display',serif}
+.article-body .content .ql-font-oswald{font-family:'Oswald',sans-serif}
+.article-body .content .ql-align-center{text-align:center}
+.article-body .content .ql-align-right{text-align:right}
+.article-body .content .ql-align-justify{text-align:justify}
+.article-body .content .ql-indent-1{padding-left:2em}
+.article-body .content .ql-indent-2{padding-left:4em}
+.article-body .content blockquote{border-left:3px solid var(--accent);padding-left:16px;color:var(--muted);margin:18px 0;font-style:italic}
+.article-body .content pre{background:#1e293b;color:#e2e8f0;padding:14px;border-radius:10px;overflow-x:auto;font-size:.9rem;margin:18px 0}
+.article-body .content img{max-width:100%;height:auto;border-radius:10px;margin:18px 0;display:block}
+.article-body .content sub{vertical-align:sub;font-size:smaller}
+.article-body .content sup{vertical-align:super;font-size:smaller}
+
+.file-attachment{margin:32px 56px;background:var(--bg);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:18px 24px;display:flex;align-items:center;gap:16px}
+[data-theme="dark"] .file-attachment{border-color:rgba(255,255,255,0.1)}
+.file-icon{font-size:2rem;flex-shrink:0}
+.file-info{flex:1}
+.file-info strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+.file-info span{font-size:12px;color:var(--muted)}
+.file-dl{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:0 3px 10px rgba(232,93,38,0.3);flex-shrink:0}
+.file-dl:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(232,93,38,0.4)}
+
+.article-footer{padding:28px 56px 44px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+[data-theme="dark"] .article-footer{border-top-color:rgba(255,255,255,0.08)}
+.btn-back{display:inline-flex;align-items:center;gap:8px;background:var(--bg);color:var(--ink-soft);padding:12px 22px;border-radius:30px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid rgba(0,0,0,0.08);transition:var(--transition)}
+[data-theme="dark"] .btn-back{border-color:rgba(255,255,255,0.1)}
+.btn-back:hover{background:rgba(232,93,38,.08);color:var(--accent)}
+.share-group{display:flex;align-items:center;gap:10px}
+.share-label{font-size:13px;color:var(--muted);font-weight:500}
+.share-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:16px;transition:var(--transition)}
+.share-wa{background:#25d366;color:white}
+.share-fb{background:#1877f2;color:white}
+.share-x{background:#000;color:white}
+.share-btn:hover{transform:scale(1.12)}
+
+/* ══ BARRE D'ACTIONS : LIKE / FAVORI ══ */
+.actions-bar{display:flex;align-items:center;gap:10px;padding:16px 56px;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);background:var(--bg);flex-wrap:wrap}
+[data-theme="dark"] .actions-bar{border-color:rgba(255,255,255,.08)}
+.action-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;border:1.5px solid rgba(0,0,0,.1);background:var(--white);color:var(--ink-soft);font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:inherit}
+[data-theme="dark"] .action-btn{border-color:rgba(255,255,255,.12);background:var(--bg)}
+.action-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.action-btn.liked{background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:#fca5a5;color:#dc2626}
+.action-btn.bookmarked{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#fbbf24;color:#d97706}
+.action-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+/* ══ COMMENTAIRES ══ */
+.comments-section{max-width:860px;margin:0 auto 60px;padding:0 20px}
+.comments-card{background:var(--white);border-radius:20px;box-shadow:var(--shadow);padding:36px 52px;transition:background .3s}
+[data-theme="dark"] .comments-card{background:var(--white)}
+.comments-card h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;margin-bottom:24px;color:var(--ink)}
+.comment-count{color:var(--muted);font-size:1rem;font-weight:400}
+.comment-form{background:var(--bg);border-radius:14px;padding:18px;margin-bottom:24px;border:1px solid rgba(0,0,0,.06)}
+[data-theme="dark"] .comment-form{border-color:rgba(255,255,255,.08)}
+.comment-form textarea{width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;background:var(--white);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical;min-height:90px;outline:none;transition:var(--transition)}
+[data-theme="dark"] .comment-form textarea{border-color:rgba(255,255,255,.12);background:var(--bg)}
+.comment-form textarea:focus{border-color:var(--accent)}
+.comment-form-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:8px}
+.comment-form-footer small{font-size:12px;color:var(--muted)}
+.comment-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;transition:var(--transition);font-family:inherit}
+.comment-submit:hover{transform:translateY(-1px);opacity:.9}
+.comment-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.login-prompt{font-size:13px;color:var(--muted);padding:14px;background:rgba(232,93,38,.06);border-radius:10px;text-align:center;margin-bottom:20px}
+.login-prompt a{color:var(--accent);font-weight:600;text-decoration:none}
+.comment-item{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+[data-theme="dark"] .comment-item{border-bottom-color:rgba(255,255,255,.08)}
+.comment-item:last-child{border-bottom:none}
+.comment-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:white;flex-shrink:0;overflow:hidden}
+.comment-avatar img{width:100%;height:100%;object-fit:cover}
+.comment-body{flex:1;min-width:0}
+.comment-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.comment-author{font-weight:700;font-size:14px;color:var(--ink)}
+.comment-date{font-size:12px;color:var(--muted)}
+.comment-text{font-size:14px;color:var(--ink-soft);line-height:1.6;word-break:break-word;white-space:pre-wrap}
+.comment-actions{display:flex;gap:8px;margin-top:8px}
+.cmt-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:20px;transition:var(--transition);font-family:inherit}
+.cmt-btn:hover{color:#dc2626;background:rgba(220,38,38,.08)}
+.cmt-btn.liked{color:#dc2626;font-weight:700}
+.comments-empty{text-align:center;color:var(--muted);padding:32px;font-size:14px}
+
+.error-state{text-align:center;padding:80px 40px}
+.error-state h3{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:12px;color:var(--ink)}
+.error-state p{color:var(--muted);margin-bottom:28px}
+
+.skeleton-wrap{padding:0}
+.sk-line{background:linear-gradient(90deg,rgba(0,0,0,0.05) 25%,rgba(0,0,0,0.09) 50%,rgba(0,0,0,0.05) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+[data-theme="dark"] .sk-line{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:200% 100%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:700px){
+  .nav{padding:0 16px}.nav-links{display:none}
+  .article-head,.article-body,.article-footer{padding-left:22px;padding-right:22px}
+  .file-attachment{margin-left:22px;margin-right:22px;flex-direction:column;align-items:flex-start}
+  .article-head{padding-top:32px}
+  .article-media iframe{height:220px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sport.html">Sport</a></li>
+      <li><a href="education.html">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="breadcrumb">
+  <a href="index.html">Accueil</a>
+  <span>›</span>
+  <span id="bc-cat">Article</span>
+</div>
+
+<div class="article-outer">
+  <div class="article-card" id="article-container">
+    <div class="skeleton-wrap" style="padding:48px 56px">
+      <div class="sk-line" style="width:120px;height:24px;margin-bottom:20px"></div>
+      <div class="sk-line" style="width:90%;height:36px;margin-bottom:12px"></div>
+      <div class="sk-line" style="width:60%;height:36px;margin-bottom:24px"></div>
+      <div class="sk-line" style="width:100%;height:300px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="comments-section" id="comments-section" style="display:none">
+  <div class="comments-card">
+    <h2>Commentaires <span class="comment-count" id="comment-count"></span></h2>
+    <div id="comment-form-wrap"></div>
+    <div id="comments-list"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, addDoc, deleteDoc, updateDoc, setDoc,
+  collection, query, orderBy, onSnapshot, increment, arrayUnion, arrayRemove, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const FIREBASE_CONFIG={apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",authDomain:"videome-b7157.firebaseapp.com",projectId:"videome-b7157",storageBucket:"videome-b7157.appspot.com",messagingSenderId:"365500246890",appId:"1:365500246890:web:99423413909b9fcc631313"};
+const app=getApps().length?getApps()[0]:initializeApp(FIREBASE_CONFIG);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const container=document.getElementById("article-container");
+const articleId=new URLSearchParams(window.location.search).get("id");
+const $=id=>document.getElementById(id);
+let _user=null;
+let _articleData=null;
+let _articleLoaded=false;
+
+// ── Auth ──
+// onAuthStateChanged peut se déclencher AVANT que loadArticle() ait injecté le DOM.
+// On stocke l'état et on attend que l'article soit chargé avant de mettre à jour l'UI.
+onAuthStateChanged(auth, user => {
+  _user = user;
+  // Si l'article est déjà affiché, on met à jour l'UI immédiatement
+  if (_articleLoaded) {
+    renderCommentForm();
+    updateLikeBtn();
+    checkFav();
+  }
+  // Sinon, loadArticle() appellera ces fonctions lui-même après injection du DOM
+});
+
+// ── Rate limiting anti-spam : 1 commentaire toutes les 30 secondes ──
+const RATE_KEY = 'nactus_comment_ts';
+function canComment() { return Date.now() - parseInt(localStorage.getItem(RATE_KEY) || '0') > 30000; }
+function markComment() { localStorage.setItem(RATE_KEY, Date.now().toString()); }
+
+function esc(s){if(!s)return"";return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function catClass(c){return{Sport:'cat-sport',Éducation:'cat-edu',Politique:'cat-pol'}[c]||'cat-actu';}
+function catEmoji(c){return{Sport:'⚽',Éducation:'📚',Politique:'🏛️'}[c]||'📰';}
+
+function getEmbedUrl(url,type){
+  if(!url)return null;
+  if(!type||type==='youtube'||url.includes('youtube')||url.includes('youtu.be')){
+    const m=url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
+    return m?`https://www.youtube.com/embed/${m[1]}`:null;
+  }
+  if(type==='dailymotion'||url.includes('dailymotion')){
+    const m=url.match(/video\/([^_?/]+)/);
+    return m?`https://www.dailymotion.com/embed/video/${m[1]}`:null;
+  }
+  if(type==='facebook'||url.includes('facebook')){
+    return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false`;
+  }
+  return null;
+}
+
+function buildMedia(a){
+  if(a.imageUrl) return `<div class="article-media"><img src="${encodeURI(a.imageUrl)}" alt="${esc(a.title)}"></div>`;
+  if(a.videoUrl){
+    const embed=getEmbedUrl(a.videoUrl,a.videoType);
+    if(embed) return `<div class="article-media"><iframe src="${embed}" allowfullscreen loading="lazy"></iframe></div>`;
+    return `<div class="article-media"><video controls><source src="${encodeURI(a.videoUrl)}"></video></div>`;
+  }
+  return '';
+}
+
+function buildFile(a){
+  if(!a.fileUrl)return'';
+  const ext=(a.fileName||'').split('.').pop().toUpperCase()||'FILE';
+  return `<div class="file-attachment">
+    <div class="file-icon">📎</div>
+    <div class="file-info">
+      <strong>${esc(a.fileName||'Fichier joint')}</strong>
+      <span>Document · ${ext}</span>
+    </div>
+    <a class="file-dl" href="${encodeURI(a.fileUrl)}" target="_blank" rel="noopener" download>⬇ Télécharger</a>
+  </div>`;
+}
+
+function showError(msg){
+  container.innerHTML=`<div class="error-state"><h3>Article introuvable</h3><p>${msg||"Cet article n'existe pas ou a été supprimé."}</p><a href="index.html" class="btn-back">← Retour à l'accueil</a></div>`;
+}
+
+// ══ FAVORIS (stockés dans Firestore, liés au compte — synchronisés entre appareils) ══
+function favId() { return _user ? `${_user.uid}_${articleId}` : null; }
+let _isFav = false;
+
+async function checkFav() {
+  if (!_user || !articleId) { _isFav = false; updateFavBtn(); return; }
+  try {
+    const snap = await getDoc(doc(db, 'favorites', favId()));
+    _isFav = snap.exists();
+  } catch(e) { _isFav = false; }
+  updateFavBtn();
+}
+
+async function toggleFav() {
+  if (!_user) { window.NACTUS?.toast('🔐 Connectez-vous pour sauvegarder cet article'); return; }
+  const btn = $('fav-btn');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  try {
+    if (_isFav) {
+      await deleteDoc(doc(db, 'favorites', favId()));
+      _isFav = false;
+      window.NACTUS?.toast('🗑️ Retiré des favoris');
+    } else {
+      await setDoc(doc(db, 'favorites', favId()), {
+        uid: _user.uid, articleId, title: _articleData?.title || '',
+        category: _articleData?.category || '', imageUrl: _articleData?.imageUrl || null,
+        savedAt: serverTimestamp()
+      });
+      _isFav = true;
+      window.NACTUS?.toast('🔖 Article sauvegardé !');
+    }
+    updateFavBtn();
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+  btn.disabled = false;
+}
+function updateFavBtn() {
+  const btn = $('fav-btn');
+  if (!btn) return;
+  btn.classList.toggle('bookmarked', _isFav);
+  btn.innerHTML = _isFav ? '🔖 Sauvegardé' : '🔖 Sauvegarder';
+}
+window._toggleFav = toggleFav;
+
+// ══ LIKES (sur le document article lui-même) ══
+function updateLikeBtn() {
+  const btn = $('like-btn');
+  if (!btn || !_articleData) return;
+  const liked = _user && (_articleData.likedBy || []).includes(_user.uid);
+  btn.classList.toggle('liked', liked);
+  btn.innerHTML = `${liked ? '❤️' : '🤍'} ${_articleData.likes || 0}`;
+}
+async function toggleLike() {
+  if (!_user) { window.NACTUS?.toast('🔐 Connectez-vous pour aimer cet article'); return; }
+  const btn = $('like-btn');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  const liked = btn.classList.contains('liked');
+  try {
+    await updateDoc(doc(db, 'articles', articleId), {
+      likes: increment(liked ? -1 : 1),
+      likedBy: liked ? arrayRemove(_user.uid) : arrayUnion(_user.uid)
+    });
+    if (_articleData) {
+      _articleData.likes = (_articleData.likes || 0) + (liked ? -1 : 1);
+      _articleData.likedBy = liked
+        ? (_articleData.likedBy || []).filter(u => u !== _user.uid)
+        : [...(_articleData.likedBy || []), _user.uid];
+    }
+    updateLikeBtn();
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+  btn.disabled = false;
+}
+window._toggleLike = toggleLike;
+
+async function loadArticle(){
+  if(!articleId){showError("Aucun identifiant d'article fourni dans le lien.");return;}
+  try{
+    const snap=await getDoc(doc(db,"articles",articleId));
+    if(!snap.exists()){showError();return;}
+    const a=snap.data();
+    _articleData = { id: snap.id, ...a };
+    if((a.status||'publié')==='brouillon'){showError("Cet article n'est pas encore publié.");return;}
+    const cat=a.category||'Actualité';
+    document.title=`${a.title||'Article'} — NACTUS`;
+    document.getElementById('bc-cat').textContent=cat;
+
+    let dateStr='';
+    if(a.date){
+      const ts=a.date.toDate?a.date.toDate():new Date(a.date);
+      dateStr=ts.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+    }
+
+    // Le contenu peut être soit du HTML (nouveaux articles rédigés avec l'éditeur Quill,
+    // déjà nettoyé par DOMPurify côté admin) soit du texte brut (anciens articles).
+    // On détecte le format et on affiche en conséquence, en re-nettoyant le HTML par sécurité.
+    const rawContent = a.content || '';
+    const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(rawContent);
+    let lead = '', rest = '';
+
+    if (looksLikeHtml) {
+      let safeHtml = rawContent;
+      if (window.DOMPurify) {
+        DOMPurify.addHook('uponSanitizeAttribute', (node, data) => {
+          if (data.attrName === 'style') {
+            const allowedProps = /^(color|background-color)\s*:\s*[^;]+;?$/i;
+            const decls = data.attrValue.split(';').map(s => s.trim()).filter(Boolean);
+            data.attrValue = decls.filter(d => allowedProps.test(d + ';')).join('; ');
+          }
+        });
+        safeHtml = DOMPurify.sanitize(rawContent, {
+          ALLOWED_TAGS: [
+            'b','i','em','strong','u','s','a','p','br','span','div',
+            'h1','h2','h3','h4','h5','h6',
+            'ul','ol','li','blockquote','pre','code',
+            'sub','sup','img'
+          ],
+          ALLOWED_ATTR: ['href','target','rel','class','style','src','alt']
+        });
+        DOMPurify.removeHook('uponSanitizeAttribute');
+      }
+      // Le premier <p> sert d'accroche (lead), le reste suit normalement
+      const tmp = document.createElement('div');
+      tmp.innerHTML = safeHtml;
+      const firstP = tmp.querySelector('p');
+      if (firstP) {
+        lead = firstP.innerHTML;
+        firstP.remove();
+        rest = tmp.innerHTML;
+      } else {
+        rest = safeHtml;
+      }
+    } else {
+      const paras = rawContent.split(/\n+/).filter(p => p.trim());
+      lead = esc(paras[0] || '');
+      rest = paras.slice(1).map(p => `<p>${esc(p)}</p>`).join('');
+    }
+
+    const pageUrl=encodeURIComponent(window.location.href);
+    const titleEnc=encodeURIComponent(a.title||'');
+
+    container.innerHTML=`
+      <div class="article-head">
+        <span class="cat-badge ${catClass(cat)}">${catEmoji(cat)} ${esc(cat)}</span>
+        <h1>${esc(a.title)}</h1>
+        <div class="article-meta">
+          ${dateStr?`<span class="meta-item">📅 ${dateStr}</span>`:''}
+          <span class="meta-item">📂 ${esc(cat)}</span>
+        </div>
+      </div>
+      ${buildMedia(a)}
+      <div class="actions-bar">
+        <button class="action-btn" id="like-btn" onclick="window._toggleLike()">🤍 ${a.likes||0}</button>
+        <button class="action-btn" id="fav-btn" onclick="window._toggleFav()">🔖 Sauvegarder</button>
+      </div>
+      <div class="article-body">
+        ${lead?`<p class="lead">${lead}</p>`:''}
+        ${rest?`<div class="content">${rest}</div>`:''}
+      </div>
+      ${buildFile(a)}
+      <div class="article-footer">
+        <a href="index.html" class="btn-back">← Retour à l'accueil</a>
+        <div class="share-group">
+          <span class="share-label">Partager</span>
+          <a class="share-btn share-wa" href="https://wa.me/?text=${titleEnc}%20${pageUrl}" target="_blank" rel="noopener" title="WhatsApp">💬</a>
+          <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" rel="noopener" title="Facebook">f</a>
+          <a class="share-btn share-x" href="https://twitter.com/intent/tweet?text=${titleEnc}&url=${pageUrl}" target="_blank" rel="noopener" title="X">𝕏</a>
+        </div>
+      </div>`;
+
+    updateLikeBtn();
+    checkFav();
+    $('comments-section').style.display = 'block';
+    renderCommentForm();
+    loadComments();
+    _articleLoaded = true; // signale que le DOM est prêt pour les mises à jour auth
+  }catch(e){
+    console.error(e);
+    showError("Une erreur est survenue lors du chargement de l'article.");
+  }
+}
+
+// ══ COMMENTAIRES (sous-collection articles/{id}/comments) ══
+function renderCommentForm() {
+  const wrap = $('comment-form-wrap');
+  if (!wrap) return;
+  if (_user) {
+    wrap.innerHTML = `<div class="comment-form">
+      <textarea id="comment-input" placeholder="Partagez votre avis sur cet article..." maxlength="1000"></textarea>
+      <div class="comment-form-footer">
+        <small id="comment-chars">0 / 1000</small>
+        <button class="comment-submit" id="comment-btn">💬 Publier</button>
+      </div>
+    </div>`;
+    $('comment-input').addEventListener('input', e => {
+      $('comment-chars').textContent = `${e.target.value.length} / 1000`;
+    });
+    $('comment-btn').addEventListener('click', submitComment);
+  } else {
+    wrap.innerHTML = `<div class="login-prompt">Vous devez <a href="login.html">vous connecter</a> pour laisser un commentaire.</div>`;
+  }
+}
+
+async function submitComment() {
+  if (!_user || !articleId) return;
+  const input = $('comment-input');
+  const text = (input?.value || '').trim();
+  if (!text) { window.NACTUS?.toast('✏️ Écrivez un commentaire'); return; }
+  if (text.length > 1000) { window.NACTUS?.toast('❌ Commentaire trop long (max 1000 caractères)'); return; }
+  if (!canComment()) { window.NACTUS?.toast('⏳ Attendez 30 secondes entre deux commentaires'); return; }
+
+  const btn = $('comment-btn');
+  if (btn) btn.disabled = true;
+  try {
+    // DOMPurify neutralise tout balisage : un commentaire est toujours du texte pur.
+    const clean = window.DOMPurify ? DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }) : text;
+    await addDoc(collection(db, 'articles', articleId, 'comments'), {
+      text: clean,
+      uid: _user.uid,
+      displayName: _user.displayName || 'Utilisateur',
+      photoURL: _user.photoURL || '',
+      date: serverTimestamp(),
+      likes: 0,
+      likedBy: []
+    });
+    markComment();
+    if (input) input.value = '';
+    const chars = $('comment-chars');
+    if (chars) chars.textContent = '0 / 1000';
+    window.NACTUS?.toast('✅ Commentaire publié !');
+  } catch(e) {
+    window.NACTUS?.toast('❌ ' + e.message);
+  }
+  if (btn) btn.disabled = false;
+}
+
+function loadComments() {
+  if (!articleId) return;
+  onSnapshot(query(collection(db, 'articles', articleId, 'comments'), orderBy('date', 'desc')), snap => {
+    const cc = $('comment-count');
+    if (cc) cc.textContent = snap.size ? `(${snap.size})` : '';
+    const list = $('comments-list');
+    if (!list) return;
+    if (snap.empty) {
+      list.innerHTML = `<div class="comments-empty">Soyez le premier à commenter cet article !</div>`;
+      return;
+    }
+    list.innerHTML = snap.docs.map(d => {
+      const c = d.data();
+      const likedByMe = _user && (c.likedBy || []).includes(_user.uid);
+      const isOwner = _user && c.uid === _user.uid;
+      let ds = '';
+      if (c.date?.toDate) ds = c.date.toDate().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+      const av = c.photoURL
+        ? `<img src="${esc(c.photoURL)}" alt="">`
+        : esc((c.displayName || 'U')[0].toUpperCase());
+      return `<div class="comment-item">
+        <div class="comment-avatar">${av}</div>
+        <div class="comment-body">
+          <div class="comment-header">
+            <span class="comment-author">${esc(c.displayName || 'Utilisateur')}</span>
+            <span class="comment-date">${ds}</span>
+          </div>
+          <div class="comment-text">${esc(c.text)}</div>
+          <div class="comment-actions">
+            <button class="cmt-btn${likedByMe ? ' liked' : ''}" onclick="window._likeComment('${d.id}',${likedByMe})">❤️ ${c.likes || 0}</button>
+            ${isOwner ? `<button class="cmt-btn" onclick="window._delComment('${d.id}')">🗑️ Supprimer</button>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+window._likeComment = async (id, liked) => {
+  if (!_user) { window.NACTUS?.toast('🔐 Connectez-vous pour aimer un commentaire'); return; }
+  try {
+    await updateDoc(doc(db, 'articles', articleId, 'comments', id), {
+      likes: increment(liked ? -1 : 1),
+      likedBy: liked ? arrayRemove(_user.uid) : arrayUnion(_user.uid)
+    });
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+};
+window._delComment = async (id) => {
+  if (!_user) return;
+  if (!confirm('Supprimer ce commentaire ?')) return;
+  try {
+    await deleteDoc(doc(db, 'articles', articleId, 'comments', id));
+    window.NACTUS?.toast('🗑️ Commentaire supprimé');
+  } catch(e) { window.NACTUS?.toast('❌ ' + e.message); }
+};
+
+loadArticle();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>

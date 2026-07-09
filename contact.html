@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+<style>
+:root{--ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#ffffff;--card:#ffffff;--border:#e2e8f0;--accent:#e85d26;--accent2:#f5a623;--accent-grd:linear-gradient(135deg,#e85d26,#f5a623);--radius:14px;--shadow:0 4px 24px rgba(11,15,26,.08);--t:all .28s cubic-bezier(.4,0,.2,1)}
+[data-theme="dark"]{--ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;--white:#161b27;--card:#1e2435;--border:#2d3a52;--shadow:0 4px 24px rgba(0,0,0,.35)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;transition:background .3s,color .3s}
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0}
+.logo-mark{width:40px;height:40px;background:var(--accent-grd);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:18px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:900;font-size:22px;color:var(--ink)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:15px;font-weight:600;transition:var(--t)}
+.nav-links a:hover{background:rgba(232,93,38,.08);color:var(--accent)}
+
+.page-hero{padding:52px 32px 32px;text-align:center}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;margin-bottom:10px}
+.page-hero p{color:var(--muted);font-size:15px;max-width:520px;margin:0 auto}
+
+.container{max-width:960px;margin:0 auto;padding:20px 32px 80px;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:start}
+@media(max-width:800px){.container{grid-template-columns:1fr}}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px}
+
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:8px}
+.field input,.field textarea,.field select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit;outline:none;transition:var(--t)}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+.field textarea{min-height:130px;resize:vertical}
+
+.btn-submit{width:100%;padding:15px;background:var(--accent-grd);color:white;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(232,93,38,.3);transition:var(--t);font-family:inherit}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(232,93,38,.45)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+.msg{margin-top:14px;text-align:center;font-size:14px;font-weight:600;min-height:18px}
+.msg.error{color:#dc2626}
+.msg.success{color:#16a34a}
+
+.info-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:18px}
+.info-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.info-icon{width:42px;height:42px;border-radius:12px;background:rgba(232,93,38,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.info-item strong{display:block;font-size:14px;color:var(--ink);margin-bottom:2px}
+.info-item a,.info-item span{font-size:13px;color:var(--muted);text-decoration:none;word-break:break-word}
+.info-item a:hover{color:var(--accent)}
+
+.socials{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.social-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:17px;transition:var(--t);background:var(--bg);border:1.5px solid var(--border);color:var(--ink-soft)}
+.social-btn:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--accent)}
+
+footer{background:var(--ink);color:rgba(255,255,255,.6);text-align:center;padding:36px 20px;font-size:13px;transition:background .3s}
+footer a{color:rgba(255,255,255,.5);text-decoration:none;margin:0 10px;transition:var(--t)}
+footer a:hover{color:var(--accent)}
+.footer-links{margin-bottom:16px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+@media(max-width:768px){.nav-links{display:none}.page-hero{padding:36px 16px 24px}.container{padding:16px 16px 60px}.card{padding:24px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sport.html">Sport</a></li>
+      <li><a href="education.html">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <h1>Contactez-nous</h1>
+  <p>Une question, une suggestion, un signalement ? Écrivez-nous, nous vous répondons rapidement.</p>
+</div>
+
+<div class="container">
+  <div class="card">
+    <form id="contact-form">
+      <div class="field">
+        <label>Nom complet *</label>
+        <input type="text" id="c-name" required maxlength="100" placeholder="Votre nom">
+      </div>
+      <div class="field">
+        <label>Adresse e-mail *</label>
+        <input type="email" id="c-email" required placeholder="vous@exemple.com">
+      </div>
+      <div class="field">
+        <label>Sujet</label>
+        <select id="c-subject">
+          <option value="Question générale">Question générale</option>
+          <option value="Signaler un article">Signaler un article</option>
+          <option value="Problème technique">Problème technique</option>
+          <option value="Partenariat">Partenariat</option>
+          <option value="Question sur un paiement">Question sur un paiement</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Message *</label>
+        <textarea id="c-message" required minlength="10" maxlength="2000" placeholder="Votre message..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit" id="c-submit">📨 Envoyer le message</button>
+      <div class="msg" id="c-msg" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <div class="card info-card">
+    <h3>Nos coordonnées</h3>
+    <div class="info-item">
+      <div class="info-icon">📧</div>
+      <div>
+        <strong>E-mail</strong>
+        <a href="mailto:contact@nactus.bf">contact@nactus.bf</a>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">📞</div>
+      <div>
+        <strong>Téléphone</strong>
+        <a href="tel:+22670000000">+226 70 00 00 00</a>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">📍</div>
+      <div>
+        <strong>Adresse</strong>
+        <span>Ouagadougou, Burkina Faso</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">🕐</div>
+      <div>
+        <strong>Disponibilité</strong>
+        <span>Lundi – Vendredi, 8h – 18h</span>
+      </div>
+    </div>
+
+    <h3 style="margin-top:24px;font-size:1rem">Suivez-nous</h3>
+    <div class="socials">
+      <a class="social-btn" href="#" title="Facebook">📘</a>
+      <a class="social-btn" href="#" title="WhatsApp">💬</a>
+      <a class="social-btn" href="#" title="X (Twitter)">𝕏</a>
+      <a class="social-btn" href="#" title="YouTube">▶️</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a><a href="sport.html">Sport</a><a href="education.html">Éducation</a><a href="politique.html">Politique</a><a href="contact.html">Contact</a>
+  </div>
+  <span>© 2026 NACTUS · Ouagadougou, Burkina Faso 🇧🇫</span>
+</footer>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const CFG = {apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",authDomain:"videome-b7157.firebaseapp.com",projectId:"videome-b7157",storageBucket:"videome-b7157.appspot.com",messagingSenderId:"365500246890",appId:"1:365500246890:web:99423413909b9fcc631313"};
+const app = getApps().length ? getApps()[0] : initializeApp(CFG);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+
+let _user = null;
+onAuthStateChanged(auth, user => {
+  _user = user;
+  if (user) {
+    if (!$('c-name').value) $('c-name').value = user.displayName || '';
+    if (!$('c-email').value) $('c-email').value = user.email || '';
+  }
+});
+
+// ── Anti-spam : 1 message toutes les 60 secondes ──
+const RATE_KEY = 'nactus_contact_ts';
+function canSend() { return Date.now() - parseInt(localStorage.getItem(RATE_KEY) || '0') > 60000; }
+function markSent() { localStorage.setItem(RATE_KEY, Date.now().toString()); }
+
+function esc(s){ return (s||'').trim(); }
+function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+$('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('c-submit');
+  const msg = $('c-msg');
+  msg.textContent = '';
+  msg.className = 'msg';
+
+  const name = esc($('c-name').value);
+  const email = esc($('c-email').value);
+  const subject = $('c-subject').value;
+  const message = esc($('c-message').value);
+
+  if (name.length < 2) { msg.textContent = '❌ Entrez votre nom.'; msg.className = 'msg error'; return; }
+  if (!isValidEmail(email)) { msg.textContent = '❌ Adresse e-mail invalide.'; msg.className = 'msg error'; return; }
+  if (message.length < 10) { msg.textContent = '❌ Votre message est trop court (10 caractères minimum).'; msg.className = 'msg error'; return; }
+  if (!canSend()) { msg.textContent = '⏳ Merci de patienter avant d\'envoyer un nouveau message.'; msg.className = 'msg error'; return; }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Envoi en cours...';
+
+  try {
+    const clean = window.DOMPurify ? DOMPurify.sanitize(message, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }) : message;
+    await addDoc(collection(db, 'contactMessages'), {
+      name, email, subject, message: clean,
+      uid: _user ? _user.uid : null,
+      status: 'nouveau',
+      date: serverTimestamp()
+    });
+    markSent();
+    msg.textContent = '✅ Message envoyé ! Nous vous répondrons par e-mail dès que possible.';
+    msg.className = 'msg success';
+    $('contact-form').reset();
+    if (_user) {
+      $('c-name').value = _user.displayName || '';
+      $('c-email').value = _user.email || '';
+    }
+  } catch(err) {
+    msg.textContent = '❌ Erreur : ' + err.message;
+    msg.className = 'msg error';
+  }
+
+  btn.disabled = false;
+  btn.textContent = '📨 Envoyer le message';
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>
