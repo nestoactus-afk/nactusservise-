@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — L'info du Burkina en temps réel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══ TOKENS ══ */
+:root {
+  --ink: #0b0f1a; --ink-soft: #374151; --muted: #6b7280;
+  --bg: #f9f8f6; --white: #ffffff; --card: #ffffff;
+  --border: #e2e8f0; --border-soft: rgba(0,0,0,0.06);
+  --accent: #e85d26; --accent2: #f5a623;
+  --accent-grd: linear-gradient(135deg, #e85d26, #f5a623);
+  --blue: #1a56db; --radius: 14px;
+  --shadow: 0 4px 24px rgba(11,15,26,0.08);
+  --shadow-lg: 0 12px 40px rgba(11,15,26,0.15);
+  --t: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-theme="dark"] {
+  --ink: #f1f5f9; --ink-soft: #cbd5e1; --muted: #94a3b8;
+  --bg: #0d1117; --white: #161b27; --card: #1e2435;
+  --border: #2d3a52; --border-soft: rgba(255,255,255,0.06);
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Inter', sans-serif; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s, color .3s;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--ink-soft); border-radius: 10px; border: 3px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+h1, h2, h3, .logo-text { letter-spacing: -0.02em; }
+
+/* ── NAV ── */
+header {
+  background: rgba(255, 255, 255, 0.75);
+  position: sticky; top: 0; z-index: 1000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  transition: background 0.3s, border 0.3s;
+}
+[data-theme="dark"] header {
+  background: rgba(30, 36, 53, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; max-width: 1280px; margin: 0 auto; padding: 0 32px; height: 72px; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
+.logo-mark { width: 40px; height: 40px; background: var(--accent-grd); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 900; color: white; font-size: 18px; box-shadow: 0 4px 15px rgba(232,93,38,0.3); }
+.logo-text { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 22px; color: var(--ink); }
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 15px; font-weight: 600; transition: var(--t); }
+.nav-links a:hover, .nav-links a.active { background: rgba(232,93,38,0.08); color: var(--accent); }
+
+/* ── HERO ── */
+.hero { position: relative; min-height: 82vh; display: flex; align-items: flex-end; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: linear-gradient(rgba(11,15,26,.25) 0%, rgba(11,15,26,.85) 100%), url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600') center/cover no-repeat; }
+.hero-content { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 32px 72px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,93,38,.9); color: white; padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 20px; }
+.hero-badge::before { content: ''; width: 7px; height: 7px; background: white; border-radius: 50%; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(1.3); } }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 900; color: white; line-height: 1.1; max-width: 700px; margin-bottom: 20px; }
+.hero p { color: rgba(255,255,255,.85); font-size: 1.1rem; max-width: 500px; margin-bottom: 32px; }
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-grd); color: white; padding: 16px 32px; border-radius: 50px; font-weight: 700; font-size: 16px; text-decoration: none; box-shadow: 0 8px 25px rgba(232,93,38,0.3); transition: all 0.3s ease; }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(232,93,38,0.5); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.15); backdrop-filter: blur(10px); color: white; padding: 16px 32px; border-radius: 50px; font-weight: 500; font-size: 16px; text-decoration: none; border: 1px solid rgba(255,255,255,.3); transition: var(--t); }
+.btn-secondary:hover { background: rgba(255,255,255,.25); }
+
+/* ── TICKER ── */
+.ticker-wrap { background: var(--ink); padding: 0; overflow: hidden; height: 38px; display: flex; align-items: center; transition: background .3s; }
+.ticker-label { background: var(--accent); color: white; padding: 0 18px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; height: 100%; display: flex; align-items: center; white-space: nowrap; flex-shrink: 0; margin-right: 20px; }
+.ticker-track { display: flex; animation: tick 30s linear infinite; width: max-content; }
+.ticker-track span { color: rgba(255,255,255,.85); font-size: 13px; white-space: nowrap; padding-right: 60px; }
+@keyframes tick { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ── LAYOUT ── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 72px 0; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+.section-title { display: flex; align-items: center; gap: 14px; }
+.section-title h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--ink); }
+.section-label { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── CARDS ── */
+.featured-grid { display: grid; grid-template-columns: 1.6fr 1fr; grid-template-rows: auto auto; gap: 24px; }
+.card-main, .card-sm, .card-v {
+  background: var(--card); border-radius: var(--radius); overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-soft);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+}
+.card-main { grid-row: 1/3; flex-direction: column; }
+.card-sm { flex-direction: row; }
+.card-v { flex-direction: column; }
+.card-main:hover, .card-sm:hover, .card-v:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); border-color: transparent; }
+.card-main .card-img { height: 320px; overflow: hidden; position: relative; }
+.card-sm .card-img { width: 140px; flex-shrink: 0; overflow: hidden; }
+.card-v .card-img { height: 200px; overflow: hidden; position: relative; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+.card-main:hover .card-img img, .card-sm:hover .card-img img, .card-v:hover .card-img img { transform: scale(1.05); }
+.no-img { width: 100%; height: 100%; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+.card-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+.card-sm .card-body { padding: 18px; justify-content: space-between; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 30px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; align-self: flex-start; }
+.badge-sport { background: #fef3c7; color: #d97706; }
+.badge-edu { background: #d1fae5; color: #059669; }
+.badge-pol { background: #ede9fe; color: #6d28d9; }
+.badge-actu { background: #e0e7ff; color: #4f46e5; }
+.card-body h3 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.3; color: var(--ink); margin-bottom: 10px; }
+.card-main .card-body h3 { font-size: 1.5rem; } .card-sm .card-body h3 { font-size: 1rem; } .card-v .card-body h3 { font-size: 1.2rem; }
+.card-body p { color: var(--muted); font-size: .95rem; line-height: 1.55; margin-bottom: 20px; }
+
+.read-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--blue), #3b82f6);
+  color: white; padding: 10px 24px; border-radius: 50px;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(26,86,219,0.25);
+  margin-top: auto; align-self: flex-start;
+}
+.read-btn::after { content: '→'; transition: transform 0.3s ease; margin-left: 2px; }
+.read-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 25px rgba(26,86,219,0.4); }
+.read-btn:hover::after { transform: translateX(4px); }
+
+.latest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.empty { text-align: center; color: var(--muted); padding: 60px 20px; grid-column: 1/-1; }
+.skeleton { background: linear-gradient(90deg, var(--border-soft) 25%, rgba(150,150,150,0.12) 50%, var(--border-soft) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: var(--radius); height: 280px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── CATEGORIES ── */
+.categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.cat-card { border-radius: var(--radius); padding: 28px 22px; text-decoration: none; display: flex; flex-direction: column; gap: 10px; transition: var(--t); position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.cat-card::after { content: ''; position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.1); }
+.cat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.cat-card.sport { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.cat-card.edu { background: linear-gradient(135deg, #10b981, #059669); }
+.cat-card.pol { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.cat-card.actu { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.cat-icon { font-size: 2rem; }
+.cat-card h3 { font-family: 'Playfair Display', serif; color: white; font-size: 1.2rem; font-weight: 700; }
+.cat-card p { color: rgba(255,255,255,.8); font-size: 13px; }
+.cat-arrow { color: rgba(255,255,255,.7); font-size: 20px; margin-top: auto; }
+
+/* ── FOOTER ── */
+footer { background: var(--ink); color: rgba(255,255,255,.6); padding: 60px 32px 28px; transition: background .3s; }
+.footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+.footer-brand .logo-text { color: white; font-size: 24px; }
+.footer-brand p { margin-top: 14px; font-size: 14px; line-height: 1.7; color: rgba(255,255,255,.5); max-width: 300px; }
+footer h4 { color: white; font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+footer ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+footer ul a { color: rgba(255,255,255,.6); text-decoration: none; font-size: 14px; transition: var(--t); }
+footer ul a:hover { color: var(--accent); padding-left: 4px; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px; max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+
+@media(max-width:900px){
+  .nav-links { display: none; }
+  .featured-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .card-main { grid-row: auto; }
+  .latest-grid { grid-template-columns: 1fr 1fr; }
+  .categories { grid-template-columns: 1fr 1fr; }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+@media(max-width:600px){
+  .container, .nav, .hero-content { padding-left: 20px; padding-right: 20px; }
+  .hero-content { padding-bottom: 48px; }
+  .latest-grid { grid-template-columns: 1fr; }
+  .card-sm { flex-direction: column; } .card-sm .card-img { width: 100%; height: 180px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Accueil</a></li>
+      <li><a href="sport.html">Sport</a></li>
+      <li><a href="education.html">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔴 En direct</div>
+    <h1>L'information du Burkina Faso, en temps réel</h1>
+    <p>Sport, politique, éducation — NACTUS couvre l'essentiel de l'actualité burkinabè, chaque jour.</p>
+    <div class="hero-actions">
+      <a href="#actus" class="btn-primary">Lire les actualités</a>
+      <a href="sport.html" class="btn-secondary">⚽ Sport</a>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-label">🔴 Breaking</div>
+  <div class="ticker-track">
+    <span>Bienvenue sur NACTUS — L'actualité burkinabè en continu</span>
+    <span>Sport · Éducation · Politique · Actualité</span>
+    <span>Suivez les derniers événements du Burkina Faso en temps réel</span>
+    <span>Bienvenue sur NACTUS — L'actualité burkinabè en continu</span>
+    <span>Sport · Éducation · Politique · Actualité</span>
+    <span>Suivez les derniers événements du Burkina Faso en temps réel</span>
+  </div>
+</div>
+
+<section class="section" id="actus">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-label">À la une</span>
+        <h2>Derniers articles</h2>
+      </div>
+    </div>
+    <div class="featured-grid" id="featured-grid">
+      <div class="skeleton"></div><div class="skeleton" style="height:130px"></div><div class="skeleton" style="height:130px"></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--ink);padding:72px 0;transition:background .3s">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title"><h2 style="color:white">Rubriques</h2></div>
+    </div>
+    <div class="categories">
+      <a href="sport.html" class="cat-card sport"><div class="cat-icon">⚽</div><h3>Sport</h3><p>Résultats, compétitions, transferts</p><div class="cat-arrow">→</div></a>
+      <a href="education.html" class="cat-card edu"><div class="cat-icon">📚</div><h3>Éducation</h3><p>Examens, écoles, pédagogie</p><div class="cat-arrow">→</div></a>
+      <a href="politique.html" class="cat-card pol"><div class="cat-icon">🏛️</div><h3>Politique</h3><p>Gouvernement, élections, diplomatie</p><div class="cat-arrow">→</div></a>
+      <a href="index.html" class="cat-card actu"><div class="cat-icon">🌍</div><h3>Actualité</h3><p>Faits divers, société, économie</p><div class="cat-arrow">→</div></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-label">Récents</span>
+        <h2>Tous les articles</h2>
+      </div>
+    </div>
+    <div class="latest-grid" id="latest-grid">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-text">NACTUS</div>
+      <p>Le média burkinabè en temps réel. Sport, politique, éducation et société — toute l'info qui compte.</p>
+    </div>
+    <div>
+      <h4>Rubriques</h4>
+      <ul>
+        <li><a href="sport.html">⚽ Sport</a></li>
+        <li><a href="education.html">📚 Éducation</a></li>
+        <li><a href="politique.html">🏛️ Politique</a></li>
+        <li><a href="index.html">🌍 Actualité</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>À propos</h4>
+      <ul>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#" id="footer-privacy-link">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span id="secret-trigger">© 2026 NACTUS. Tous droits réservés.</span>
+    <span>Ouagadougou, Burkina Faso 🇧🇫</span>
+  </div>
+</footer>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",
+  authDomain: "videome-b7157.firebaseapp.com",
+  projectId: "videome-b7157",
+  storageBucket: "videome-b7157.appspot.com",
+  messagingSenderId: "365500246890",
+  appId: "1:365500246890:web:99423413909b9fcc631313"
+};
+const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+const db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+function esc(s){ return s ? s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) : ''; }
+function ytId(url){ try{ let id = url.split("v=")[1] || url.split("youtu.be/")[1] || ""; return id.split("&")[0].split("?")[0]; } catch(e){ return ""; } }
+
+onSnapshot(query(collection(db, "articles"), orderBy("date", "desc")), snap => {
+  const fg = $('featured-grid'), lg = $('latest-grid');
+  const docs = [];
+  snap.forEach(d => {
+    const a = d.data();
+    if ((a.status || 'publié') === 'brouillon') return; // les brouillons ne s'affichent jamais publiquement
+    docs.push({ id: d.id, ...a });
+  });
+  if (!docs.length) {
+    fg.innerHTML = '<div class="empty">Aucun article disponible pour le moment</div>';
+    lg.innerHTML = '';
+    return;
+  }
+  const [main, ...rest] = docs;
+  const sm = rest.slice(0, 2), latest = rest.slice(2);
+  const badgeCls = c => ({ Sport: 'badge-sport', Éducation: 'badge-edu', Politique: 'badge-pol' }[c] || 'badge-actu');
+  const media = (a, t) => a.imageUrl
+    ? `<img src="${encodeURI(a.imageUrl)}" alt="${t}" loading="lazy">`
+    : a.videoUrl
+      ? `<img src="https://img.youtube.com/vi/${ytId(a.videoUrl)}/hqdefault.jpg" alt="${t}" loading="lazy">`
+      : `<div class="no-img">📰</div>`;
+
+  const mT = esc(main.title), mC = esc(main.plainText || main.content || '');
+
+  fg.innerHTML = `
+  <article class="card-main">
+    <div class="card-img">${media(main, mT)}</div>
+    <div class="card-body">
+      <span class="badge ${badgeCls(main.category)}">${esc(main.category || 'Actualité')}</span>
+      <h3>${mT}</h3><p>${mC.substring(0, 160)}${mC.length > 160 ? '...' : ''}</p>
+      <a class="read-btn" href="article.html?id=${main.id}">Lire</a>
+    </div>
+  </article>
+  ${sm.map(a => `<article class="card-sm"><div class="card-img">${media(a, esc(a.title))}</div><div class="card-body"><span class="badge ${badgeCls(a.category)}">${esc(a.category || 'Actualité')}</span><h3>${esc(a.title)}</h3><a class="read-btn" href="article.html?id=${a.id}">Lire</a></div></article>`).join('')}`;
+
+  lg.innerHTML = latest.length
+    ? latest.map(a => `<article class="card-v"><div class="card-img">${media(a, esc(a.title))}</div><div class="card-body"><span class="badge ${badgeCls(a.category)}">${esc(a.category || 'Actualité')}</span><h3>${esc(a.title)}</h3><p>${esc(a.plainText || a.content || '').substring(0, 100)}...</p><a class="read-btn" href="article.html?id=${a.id}">Lire l'article</a></div></article>`).join('')
+    : '<div class="empty">Pas d\'autres articles pour le moment</div>';
+}, err => {
+  console.error("Erreur de chargement des articles :", err);
+  $('featured-grid').innerHTML = '<div class="empty">Impossible de charger les actualités. Veuillez réessayer plus tard.</div>';
+  $('latest-grid').innerHTML = '';
+});
+
+// Lien confidentialité dans le footer
+$('footer-privacy-link').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (window.NACTUS?.openPrivacy) window.NACTUS.openPrivacy();
+});
+
+// Easter egg : 3 clics rapides sur le copyright → page de connexion admin
+let clicks = 0, timer = null;
+$('secret-trigger').addEventListener('click', () => {
+  clicks++;
+  if (clicks === 3) window.location.href = 'login.html';
+  clearTimeout(timer);
+  timer = setTimeout(() => clicks = 0, 2500);
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>

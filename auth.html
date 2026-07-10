@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NACTUS — Connexion</title>
+<style>
+  :root {
+    --bg: #161110;
+    --panel: #221B1A;
+    --border: #3A2E2C;
+    --border-2: #362A26;
+    --text: #F3EFEA;
+    --muted: rgba(243, 239, 234, 0.6);
+    --muted-2: rgba(243, 239, 234, 0.4);
+    --accent: #E05A33;
+    --accent-hover: #C24B27;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .layout {
+    min-height: 100vh;
+    display: flex;
+  }
+  .brand-side {
+    position: relative;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px;
+    overflow: hidden;
+  }
+  .brand-side img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .brand-side::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #120e0d 0%, rgba(18,14,13,0.6) 45%, transparent 100%);
+    z-index: 1;
+  }
+  .brand-side::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(18,14,13,0.8), transparent 60%);
+    z-index: 1;
+  }
+  .brand-content { position: relative; z-index: 2; }
+  .brand-logo { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+  .brand-tagline h2 {
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0 0 20px;
+  }
+  .brand-tagline p {
+    font-size: 18px;
+    color: rgba(243,239,234,0.8);
+    max-width: 420px;
+    margin: 0;
+  }
+  .form-side {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 48px;
+  }
+  .form-wrap { width: 100%; max-width: 380px; }
+  .mobile-logo { display: none; text-align: center; margin-bottom: 40px; font-size: 28px; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; }
+  .tabs { display: flex; gap: 32px; border-bottom: 1px solid var(--border-2); margin-bottom: 32px; }
+  .tab-btn {
+    background: none; border: none; cursor: pointer;
+    padding-bottom: 12px; font-size: 14px; font-weight: 500;
+    color: var(--muted); position: relative; font-family: inherit;
+  }
+  .tab-btn.active { color: var(--accent); }
+  .tab-btn.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent);
+  }
+  .tab-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 14px; font-weight: 500; color: rgba(243,239,234,0.8); margin-bottom: 6px; }
+  .field-row { display: flex; justify-content: space-between; align-items: center; }
+  .input-wrap { position: relative; }
+  .input-wrap svg.icon-left {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: rgba(243,239,234,0.4); pointer-events: none;
+  }
+  input {
+    width: 100%; padding: 10px 12px 10px 40px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text); font-size: 14px; font-family: inherit;
+  }
+  input::placeholder { color: rgba(243,239,234,0.3); }
+  input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .toggle-eye {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: rgba(243,239,234,0.4); display: flex;
+  }
+  .toggle-eye:hover { color: var(--text); }
+  .forgot-link {
+    background: none; border: none; cursor: pointer; font-size: 12px; color: var(--accent); font-family: inherit;
+  }
+  .forgot-link:disabled { opacity: 0.5; cursor: not-allowed; }
+  .strength-bars { display: flex; gap: 4px; margin-top: 12px; }
+  .strength-bar { height: 4px; width: 100%; border-radius: 999px; background: var(--border); transition: background 0.3s; }
+  .strength-label { font-size: 12px; color: rgba(243,239,234,0.5); margin-top: 6px; }
+  .btn-primary {
+    width: 100%; height: 44px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent); color: #fff; border: none; border-radius: 6px;
+    font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+  .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+  .btn-google {
+    width: 100%; height: 44px; display: flex; align-items: center; justify-content: center; gap: 12px;
+    background: var(--panel); color: rgba(243,239,234,0.9); border: 1px solid var(--border); border-radius: 6px;
+    font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit;
+  }
+  .btn-google:hover:not(:disabled) { background: #2C2321; color: var(--text); }
+  .btn-google:disabled { opacity: 0.7; cursor: not-allowed; }
+  .divider { display: flex; align-items: center; margin: 24px 0; color: rgba(243,239,234,0.5); font-size: 14px; }
+  .divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--border); }
+  .divider span { padding: 0 12px; }
+  .terms { margin-top: 32px; text-align: center; font-size: 12px; color: rgba(243,239,234,0.4); }
+  .terms a { color: inherit; text-decoration: underline; }
+  .error-box {
+    display: flex; gap: 8px; align-items: flex-start; margin-bottom: 24px; padding: 12px;
+    border-radius: 6px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5; font-size: 14px;
+  }
+  .back-btn {
+    background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;
+    color: rgba(243,239,234,0.6); font-size: 14px; margin-bottom: 32px; font-family: inherit;
+  }
+  .back-btn:hover:not(:disabled) { color: var(--text); }
+  .back-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .success-view { text-align: center; padding: 48px 0; }
+  .success-icon {
+    width: 64px; height: 64px; border-radius: 999px; background: rgba(224,90,51,0.2); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .success-view h2 { font-size: 30px; font-weight: 600; margin: 0 0 12px; }
+  .success-view p { color: rgba(243,239,234,0.7); margin: 0 0 24px; }
+  .spinner {
+    width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+  }
+  .spinner-dark { border-color: rgba(243,239,234,0.3); border-top-color: var(--text); width: 16px; height: 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hidden { display: none !important; }
+  [data-view] { animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+
+  @media (max-width: 1023px) {
+    .brand-side { display: none; }
+    .form-side { width: 100%; }
+    .mobile-logo { display: block; }
+  }
+</style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="brand-side">
+      <img src="nactus-bg.jpg" alt="Burkinabè cityscape at sunset" />
+      <div class="brand-content"><span class="brand-logo">NACTUS</span></div>
+      <div class="brand-content brand-tagline">
+        <h2>L'actualité burkinabè, au cœur de l'événement.</h2>
+        <p>Rejoignez la première plateforme d'information nationale. Fiable, indépendante et en temps réel.</p>
+      </div>
+    </aside>
+
+    <main class="form-side">
+      <div class="form-wrap">
+        <div class="mobile-logo">NACTUS</div>
+
+        <!-- LOGIN / SIGNUP VIEW -->
+        <div id="view-auth" data-view>
+          <div class="tabs">
+            <button type="button" class="tab-btn active" data-tab="login">Se connecter</button>
+            <button type="button" class="tab-btn" data-tab="signup">Créer un compte</button>
+          </div>
+
+          <div id="auth-error" class="error-box hidden"></div>
+
+          <form id="auth-form">
+            <div class="field hidden" id="field-name">
+              <label for="name">Nom complet</label>
+              <div class="input-wrap">
+                <svg class="icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input id="name" type="text" placeholder="Jean Dupont" autocomplete="name" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email">Adresse email</label>
+              <div class="input-wrap">
+                <svg class="icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                <input id="email" type="email" placeholder="vous@exemple.com" autocomplete="email" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-row">
+                <label for="password">Mot de passe</label>
+                <button type="button" class="forgot-link" id="show-forgot">Oublié ?</button>
+              </div>
+              <div class="input-wrap">
+                <svg class="icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" minlength="6" required style="padding-right:40px" />
+                <button type="button" class="toggle-eye" id="toggle-password">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              <div class="strength-bars hidden" id="strength-bars">
+                <div class="strength-bar"></div><div class="strength-bar"></div><div class="strength-bar"></div><div class="strength-bar"></div>
+              </div>
+              <p class="strength-label hidden" id="strength-label"></p>
+            </div>
+
+            <div class="field hidden" id="field-confirm">
+              <label for="confirmPassword">Confirmer le mot de passe</label>
+              <div class="input-wrap">
+                <svg class="icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input id="confirmPassword" type="password" placeholder="••••••••" autocomplete="new-password" minlength="6" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submit-btn" style="margin-top:8px">
+              <span id="submit-label">Se connecter</span>
+            </button>
+          </form>
+
+          <div class="divider"><span>Ou</span></div>
+
+          <button type="button" class="btn-google" id="google-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            <span id="google-label">Continuer avec Google</span>
+          </button>
+
+          <p class="terms">En continuant, vous acceptez nos <a href="#">Conditions d'utilisation</a> et notre <a href="#">Politique de confidentialité</a>.</p>
+        </div>
+
+        <!-- FORGOT PASSWORD VIEW -->
+        <div id="view-forgot" data-view class="hidden">
+          <button type="button" class="back-btn" id="back-to-login">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+            Retour
+          </button>
+          <h2 style="font-size:24px;font-weight:600;margin:0 0 12px">Mot de passe oublié</h2>
+          <p style="color:rgba(243,239,234,0.6);font-size:14px;margin:0 0 32px;line-height:1.6">
+            Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+          </p>
+          <div id="forgot-error" class="error-box hidden"></div>
+          <form id="forgot-form">
+            <div class="field">
+              <label for="forgot-email">Adresse email</label>
+              <div class="input-wrap">
+                <svg class="icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                <input id="forgot-email" type="email" placeholder="vous@exemple.com" autocomplete="email" required />
+              </div>
+            </div>
+            <button type="submit" class="btn-primary" id="forgot-submit-btn" style="margin-top:8px">
+              <span id="forgot-submit-label">Envoyer le lien</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- SUCCESS VIEW -->
+        <div id="view-success" data-view class="hidden success-view">
+          <div class="success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h2>Bienvenue</h2>
+          <p id="success-message"></p>
+          <button type="button" class="btn-primary" id="success-btn" style="width:auto;padding:0 24px;margin:0 auto">
+            <span id="success-btn-label">Continuer</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      onAuthStateChanged,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signInWithPopup,
+      sendPasswordResetEmail,
+      updateProfile,
+    } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp,
+    } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+    // Remplacez ces valeurs par celles de votre propre projet Firebase
+    // (Console Firebase > Paramètres du projet > Vos applications).
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",
+      authDomain: "videome-b7157.firebaseapp.com",
+      projectId: "videome-b7157",
+      storageBucket: "videome-b7157.appspot.com",
+      messagingSenderId: "365500246890",
+      appId: "1:365500246890:web:99423413909b9fcc631313",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    // ---------- State ----------
+    let currentTab = "login"; // 'login' | 'signup'
+    let currentView = "auth"; // 'auth' | 'forgot' | 'success'
+    let isBusy = false;
+    let lastCompletedFlow = "login";
+
+    // ---------- Elements ----------
+    const viewAuth = document.getElementById("view-auth");
+    const viewForgot = document.getElementById("view-forgot");
+    const viewSuccess = document.getElementById("view-success");
+
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const fieldName = document.getElementById("field-name");
+    const fieldConfirm = document.getElementById("field-confirm");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmInput = document.getElementById("confirmPassword");
+    const authForm = document.getElementById("auth-form");
+    const authError = document.getElementById("auth-error");
+    const submitBtn = document.getElementById("submit-btn");
+    const submitLabel = document.getElementById("submit-label");
+    const togglePasswordBtn = document.getElementById("toggle-password");
+    const strengthBars = document.getElementById("strength-bars");
+    const strengthLabel = document.getElementById("strength-label");
+    const showForgotBtn = document.getElementById("show-forgot");
+    const googleBtn = document.getElementById("google-btn");
+    const googleLabel = document.getElementById("google-label");
+
+    const backToLoginBtn = document.getElementById("back-to-login");
+    const forgotForm = document.getElementById("forgot-form");
+    const forgotEmailInput = document.getElementById("forgot-email");
+    const forgotError = document.getElementById("forgot-error");
+    const forgotSubmitBtn = document.getElementById("forgot-submit-btn");
+    const forgotSubmitLabel = document.getElementById("forgot-submit-label");
+
+    const successMessageEl = document.getElementById("success-message");
+    const successBtn = document.getElementById("success-btn");
+    const successBtnLabel = document.getElementById("success-btn-label");
+
+    // ---------- Helpers ----------
+    function showView(view) {
+      currentView = view;
+      viewAuth.classList.toggle("hidden", view !== "auth");
+      viewForgot.classList.toggle("hidden", view !== "forgot");
+      viewSuccess.classList.toggle("hidden", view !== "success");
+    }
+
+    function setError(el, message) {
+      if (!message) {
+        el.classList.add("hidden");
+        el.textContent = "";
+        return;
+      }
+      el.textContent = message;
+      el.classList.remove("hidden");
+    }
+
+    function setBusy(busy) {
+      isBusy = busy;
+      submitBtn.disabled = busy;
+      googleBtn.disabled = busy;
+      forgotSubmitBtn.disabled = busy;
+      showForgotBtn.disabled = busy;
+      backToLoginBtn.disabled = busy;
+      tabBtns.forEach((btn) => (btn.disabled = busy));
+    }
+
+    function passwordStrength(pass) {
+      let score = 0;
+      if (!pass) return 0;
+      if (pass.length > 5) score += 1;
+      if (pass.length > 8) score += 1;
+      if (/[A-Z]/.test(pass)) score += 1;
+      if (/[0-9]/.test(pass)) score += 1;
+      if (/[^A-Za-z0-9]/.test(pass)) score += 1;
+      return Math.min(4, score);
+    }
+
+    const strengthColors = ["#ef4444", "#f97316", "#f59e0b", "#10b981"];
+    const strengthLabels = ["Très faible", "Faible", "Moyen", "Bon", "Fort"];
+
+    function updateStrengthUI() {
+      const pass = passwordInput.value;
+      if (currentTab !== "signup" || pass.length === 0) {
+        strengthBars.classList.add("hidden");
+        strengthLabel.classList.add("hidden");
+        return;
+      }
+      strengthBars.classList.remove("hidden");
+      strengthLabel.classList.remove("hidden");
+      const score = passwordStrength(pass);
+      const bars = strengthBars.querySelectorAll(".strength-bar");
+      bars.forEach((bar, i) => {
+        bar.style.background = score >= i + 1 ? strengthColors[Math.max(0, score - 1)] : "var(--border)";
+      });
+      strengthLabel.textContent = strengthLabels[score];
+    }
+
+    function setTab(tab) {
+      currentTab = tab;
+      tabBtns.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tab));
+      fieldName.classList.toggle("hidden", tab !== "signup");
+      fieldConfirm.classList.toggle("hidden", tab !== "signup");
+      nameInput.required = tab === "signup";
+      confirmInput.required = tab === "signup";
+      passwordInput.autocomplete = tab === "login" ? "current-password" : "new-password";
+      showForgotBtn.style.display = tab === "login" ? "" : "none";
+      submitLabel.textContent = tab === "login" ? "Se connecter" : "Créer mon compte";
+      setError(authError, "");
+      updateStrengthUI();
+    }
+
+    function firebaseAuthErrorMessage(error) {
+      const code = error && error.code ? error.code : "";
+      switch (code) {
+        case "auth/invalid-email":
+          return "L'adresse email est invalide.";
+        case "auth/user-not-found":
+        case "auth/invalid-credential":
+        case "auth/wrong-password":
+          return "Email ou mot de passe incorrect.";
+        case "auth/email-already-in-use":
+          return "Un compte existe déjà avec cette adresse email.";
+        case "auth/weak-password":
+          return "Le mot de passe est trop faible (6 caractères minimum).";
+        case "auth/popup-closed-by-user":
+          return "La fenêtre de connexion Google a été fermée.";
+        case "auth/too-many-requests":
+          return "Trop de tentatives. Réessayez plus tard.";
+        default:
+          return "Une erreur est survenue. Veuillez réessayer.";
+      }
+    }
+
+    async function upsertUserProfile(user, name) {
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          name: name ?? user.displayName ?? "",
+          email: user.email ?? "",
+          createdAt: serverTimestamp(),
+        },
+        { merge: true },
+      );
+    }
+
+    // ---------- Auth state ----------
+    onAuthStateChanged(auth, (user) => {
+      if (user && currentView !== "success") {
+        // Already logged in — in a real app, redirect to the home page here.
+        // window.location.href = "/";
+      }
+    });
+
+    // ---------- Event bindings ----------
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => setTab(btn.dataset.tab));
+    });
+
+    togglePasswordBtn.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+      confirmInput.type = isPassword ? "text" : "password";
+    });
+
+    passwordInput.addEventListener("input", updateStrengthUI);
+
+    showForgotBtn.addEventListener("click", () => {
+      if (isBusy) return;
+      setError(forgotError, "");
+      showView("forgot");
+    });
+
+    backToLoginBtn.addEventListener("click", () => {
+      if (isBusy) return;
+      setError(forgotError, "");
+      showView("auth");
+    });
+
+    authForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setError(authError, "");
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (currentTab === "signup" && password !== confirmInput.value) {
+        setError(authError, "Les mots de passe ne correspondent pas.");
+        return;
+      }
+
+      setBusy(true);
+      submitLabel.innerHTML = '<span class="spinner"></span>';
+      try {
+        if (currentTab === "login") {
+          await signInWithEmailAndPassword(auth, email, password);
+          successMessageEl.textContent = "Vous êtes connecté avec succès.";
+        } else {
+          const name = nameInput.value.trim();
+          try {
+            const credential = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(credential.user, { displayName: name });
+            await upsertUserProfile(credential.user, name);
+          } catch (err) {
+            if (err && err.code === "auth/email-already-in-use") {
+              // Account may already exist from a previous attempt where only
+              // the profile write failed — recover by signing in instead.
+              await signInWithEmailAndPassword(auth, email, password);
+            } else {
+              throw err;
+            }
+          }
+          successMessageEl.textContent = "Votre compte a été créé avec succès.";
+        }
+        lastCompletedFlow = currentTab;
+        successBtnLabel.textContent = "Continuer";
+        showView("success");
+      } catch (err) {
+        setError(authError, firebaseAuthErrorMessage(err));
+      } finally {
+        setBusy(false);
+        submitLabel.textContent = currentTab === "login" ? "Se connecter" : "Créer mon compte";
+      }
+    });
+
+    googleBtn.addEventListener("click", async () => {
+      setError(authError, "");
+      setBusy(true);
+      googleLabel.innerHTML = '<span class="spinner-dark spinner"></span>';
+      try {
+        const credential = await signInWithPopup(auth, googleProvider);
+        await upsertUserProfile(credential.user, credential.user.displayName);
+        lastCompletedFlow = "login";
+        successMessageEl.textContent = "Vous êtes connecté avec succès.";
+        successBtnLabel.textContent = "Continuer";
+        showView("success");
+      } catch (err) {
+        setError(authError, firebaseAuthErrorMessage(err));
+      } finally {
+        setBusy(false);
+        googleLabel.textContent = "Continuer avec Google";
+      }
+    });
+
+    forgotForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setError(forgotError, "");
+      const email = forgotEmailInput.value.trim();
+      setBusy(true);
+      forgotSubmitLabel.innerHTML = '<span class="spinner"></span>';
+      try {
+        await sendPasswordResetEmail(auth, email);
+        lastCompletedFlow = "forgot";
+        successMessageEl.textContent = `Un lien de réinitialisation a été envoyé à ${email}.`;
+        successBtnLabel.textContent = "Retour à la connexion";
+        showView("success");
+      } catch (err) {
+        setError(forgotError, firebaseAuthErrorMessage(err));
+      } finally {
+        setBusy(false);
+        forgotSubmitLabel.textContent = "Envoyer le lien";
+      }
+    });
+
+    successBtn.addEventListener("click", () => {
+      if (lastCompletedFlow === "forgot") {
+        setError(forgotError, "");
+        showView("auth");
+        setTab("login");
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    // ---------- Init ----------
+    const initialTab = new URLSearchParams(window.location.search).get("tab") === "register" ? "signup" : "login";
+    setTab(initialTab);
+    showView("auth");
+  </script>
+
+</body>
+</html>

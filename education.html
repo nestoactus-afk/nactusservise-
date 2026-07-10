@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Éducation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#ffffff;--accent:#e85d26;--accent2:#f5a623;--cat:#10b981;--cat-dark:#059669;--radius:14px;--shadow:0 4px 24px rgba(11,15,26,0.08);--shadow-hover:0 12px 40px rgba(11,15,26,0.15);--transition:all 0.28s cubic-bezier(0.4,0,0.2,1)}
+[data-theme="dark"]{--ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;--white:#161b27;--shadow:0 4px 24px rgba(0,0,0,.3);--shadow-hover:0 12px 40px rgba(0,0,0,.45)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:16px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--ink);letter-spacing:1px}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--ink-soft);font-size:14px;font-weight:500;transition:var(--transition)}
+.nav-links a:hover{background:rgba(232,93,38,0.08);color:var(--accent)}
+.nav-links a.active{color:var(--cat);background:rgba(16,185,129,0.1)}
+.page-hero{background:linear-gradient(135deg,#10b981,#059669);padding:60px 32px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'📚';position:absolute;right:10%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:0.1}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;margin-bottom:12px}
+.page-hero p{color:rgba(255,255,255,0.82);font-size:1.05rem;max-width:500px;margin:0 auto}
+
+/* Bandeau abonnement */
+.sub-banner{background:linear-gradient(135deg,#1e293b,#334155);padding:18px 32px;text-align:center}
+.sub-banner-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sub-banner p{color:rgba(255,255,255,.85);font-size:14px}
+.sub-banner strong{color:var(--accent2)}
+.sub-cta{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;transition:var(--transition)}
+.sub-cta:hover{transform:translateY(-2px);opacity:.92}
+
+.container{max-width:1280px;margin:0 auto;padding:0 32px}
+.section{padding:60px 0}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:12px}
+.section-title{display:flex;align-items:center;gap:12px}
+.section-label{background:var(--cat);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+.section-header h2{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+
+/* Carte article */
+.card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);display:flex;flex-direction:column;border:1px solid rgba(0,0,0,0.04);position:relative}
+[data-theme="dark"] .card{border-color:rgba(255,255,255,0.05)}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover)}
+.card-img{position:relative;aspect-ratio:16/10;overflow:hidden;background:#d1fae5}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.card:hover .card-img img{transform:scale(1.05)}
+.no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#d1fae5,#a7f3d0)}
+.card-badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.95);color:var(--cat-dark);padding:4px 11px;border-radius:30px;font-size:11px;font-weight:700;text-transform:uppercase;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+/* Badge document payant */
+.card-paid-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:4px 11px;border-radius:30px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+/* Badge document gratuit */
+.card-free-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--cat),var(--cat-dark));color:white;padding:4px 11px;border-radius:30px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+/* Badge déjà acheté */
+.card-owned-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;padding:4px 11px;border-radius:30px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+
+.card-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.card-body h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;line-height:1.35;color:var(--ink);margin-bottom:8px}
+.card-body p{color:var(--muted);font-size:0.88rem;line-height:1.6;flex:1;margin-bottom:16px}
+.card-price{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:12px}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+
+/* Boutons */
+.btn-read{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--cat),var(--cat-dark));color:white;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:0 3px 12px rgba(16,185,129,0.3)}
+.btn-read:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(16,185,129,0.45)}
+.btn-buy{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:var(--transition);box-shadow:0 3px 12px rgba(245,158,11,0.3)}
+.btn-buy:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,158,11,0.45)}
+.btn-download{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:700;text-decoration:none;transition:var(--transition);box-shadow:0 3px 12px rgba(99,102,241,0.3)}
+.btn-download:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,0.45)}
+.btn-login-prompt{display:inline-flex;align-items:center;gap:6px;background:var(--bg);color:var(--ink-soft);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid var(--cat);transition:var(--transition)}
+.btn-login-prompt:hover{background:rgba(16,185,129,0.07);color:var(--cat)}
+
+.empty-state{text-align:center;color:var(--muted);padding:80px 20px;grid-column:1/-1}
+.empty-state h3{font-size:1.2rem;margin-bottom:8px;color:var(--ink)}
+.skeleton{background:linear-gradient(90deg,rgba(0,0,0,0.04) 25%,rgba(0,0,0,0.08) 50%,rgba(0,0,0,0.04) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius);height:280px}
+[data-theme="dark"] .skeleton{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:200% 100%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+footer{background:var(--ink);color:rgba(255,255,255,0.6);text-align:center;padding:36px 20px;font-size:13px;transition:background .3s}
+footer a{color:rgba(255,255,255,0.5);text-decoration:none;margin:0 10px;transition:var(--transition)}
+footer a:hover{color:var(--accent)}
+.footer-links{margin-bottom:16px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+@media(max-width:768px){.nav-links{display:none}.nav{padding:0 16px}.container{padding:0 16px}.page-hero{padding:44px 16px}.sub-banner{padding:14px 16px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sport.html">Sport</a></li>
+      <li><a href="education.html" class="active">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+</header>
+
+<!-- Bandeau abonnement (masqué si déjà abonné) -->
+<div class="sub-banner" id="sub-banner">
+  <div class="sub-banner-inner">
+    <p>📚 Accédez à <strong>tous les documents éducatifs</strong> sans limite avec l'abonnement mensuel NACTUS Éducation</p>
+    <a class="sub-cta" href="paiement.html?mode=sub&article=edu_subscription&price=2000&title=Abonnement+NACTUS+%C3%89ducation">
+      🎓 S'abonner — 2 000 FCFA/mois
+    </a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <h1>Éducation</h1>
+  <p>Examens, écoles, pédagogie et documents éducatifs du Burkina Faso.</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-label">Éducation</span>
+        <h2>Articles &amp; Documents</h2>
+      </div>
+    </div>
+    <div class="grid" id="grid">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a><a href="sport.html">Sport</a><a href="education.html">Éducation</a><a href="politique.html">Politique</a><a href="contact.html">Contact</a>
+  </div>
+  <span>© 2026 NACTUS · Ouagadougou, Burkina Faso 🇧🇫</span>
+</footer>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import {
+  getFirestore, collection, onSnapshot, query, orderBy, doc, getDoc
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+const CFG = {apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",authDomain:"videome-b7157.firebaseapp.com",projectId:"videome-b7157",storageBucket:"videome-b7157.appspot.com",messagingSenderId:"365500246890",appId:"1:365500246890:web:99423413909b9fcc631313"};
+const app = getApps().length ? getApps()[0] : initializeApp(CFG);
+const db  = getAuth(app) && getFirestore(app);
+const auth = getAuth(app);
+const box  = document.getElementById("grid");
+
+let _user = null;
+// Map articleId → true si l'utilisateur a acheté ou est abonné
+let _purchases = new Set();
+let _hasSubActive = false;
+let _allArticles = [];
+let _articlesLoaded = false;
+let _subPrice = 2000; // valeur par défaut tant que le prix configuré n'est pas encore chargé
+
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function ytId(url){try{let id=url.split("v=")[1]||url.split("youtu.be/")[1]||"";return id.split("&")[0].split("?")[0];}catch(e){return "";}}
+
+// ── Charge le prix de l'abonnement défini par l'admin (onglet Tarifs) ──
+async function loadSubscriptionPrice() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'pricing'));
+    if (snap.exists() && snap.data().subscriptionPrice) {
+      _subPrice = snap.data().subscriptionPrice;
+    }
+  } catch(e) { /* garde la valeur par défaut en cas d'erreur */ }
+  const cta = document.querySelector('.sub-cta');
+  if (cta) {
+    cta.href = `paiement.html?mode=sub&article=edu_subscription&price=${_subPrice}&title=${encodeURIComponent('Abonnement NACTUS Éducation')}`;
+    cta.textContent = `🎓 S'abonner — ${_subPrice.toLocaleString('fr')} FCFA/mois`;
+  }
+}
+loadSubscriptionPrice();
+
+// ── Vérifie les achats de l'utilisateur connecté ──────────────
+async function loadUserPurchases(user) {
+  _purchases.clear();
+  _hasSubActive = false;
+  if (!user) return;
+
+  try {
+    // Vérifier l'abonnement
+    const subSnap = await getDoc(doc(db, 'purchases', `${user.uid}_edu_subscription`));
+    if (subSnap.exists()) {
+      const sub = subSnap.data();
+      if (sub.status === 'completed') {
+        const expiresAt = sub.expiresAt ? new Date(sub.expiresAt) : null;
+        _hasSubActive = !expiresAt || expiresAt > new Date();
+      }
+    }
+  } catch(e) { /* silencieux */ }
+
+  if (_hasSubActive) {
+    // Abonné actif : masquer le bandeau
+    const banner = document.getElementById('sub-banner');
+    if (banner) banner.style.display = 'none';
+    return;
+  }
+
+  // Charger les achats à l'unité — on cherche tous les documents purchases/{uid}_{articleId}
+  // Firestore ne permet pas de lister par préfixe, donc on vérifie article par article
+  // après chargement des articles. Le re-render est déclenché dans renderCards().
+}
+
+// ── Vérifie si un article spécifique est acheté ───────────────
+async function checkPurchase(articleId) {
+  if (!_user || _hasSubActive) return _hasSubActive;
+  if (_purchases.has(articleId)) return true;
+  try {
+    const snap = await getDoc(doc(db, 'purchases', `${_user.uid}_${articleId}`));
+    if (snap.exists() && snap.data().status === 'completed') {
+      _purchases.add(articleId);
+      return true;
+    }
+  } catch(e) { /* silencieux */ }
+  return false;
+}
+
+// ── Auth ──────────────────────────────────────────────────────
+onAuthStateChanged(auth, async user => {
+  _user = user;
+  await loadUserPurchases(user);
+  if (_articlesLoaded) renderCards();
+});
+
+// ── Chargement des articles ───────────────────────────────────
+onSnapshot(query(collection(db, "articles"), orderBy("date","desc")), async snap => {
+  _allArticles = [];
+  snap.forEach(d => {
+    const a = d.data();
+    if (a.category !== "Éducation") return;
+    if ((a.status || "publié") === "brouillon") return;
+    _allArticles.push({ id: d.id, ...a });
+  });
+  _articlesLoaded = true;
+  await renderCards();
+}, err => {
+  console.error(err);
+  box.innerHTML = `<div class="empty-state"><h3>Erreur de chargement</h3><p>Impossible de récupérer les articles.</p></div>`;
+});
+
+// ── Rendu des cartes ──────────────────────────────────────────
+async function renderCards() {
+  if (!_allArticles.length) {
+    box.innerHTML = `<div class="empty-state"><h3>Aucun article</h3><p>Pas encore d'actualités éducatives.</p></div>`;
+    return;
+  }
+
+  // Pour chaque article avec document payant, on vérifie l'achat
+  const cards = await Promise.all(_allArticles.map(async a => buildCard(a)));
+  box.innerHTML = cards.join('');
+}
+
+async function buildCard(a) {
+  const t = esc(a.title);
+  const c = esc((a.plainText || a.content || "").replace(/<[^>]*>/g, "")).substring(0, 120);
+
+  let img = `<div class="no-img">📚</div>`;
+  if (a.imageUrl) img = `<img src="${encodeURI(a.imageUrl)}" alt="${t}" loading="lazy">`;
+  else if (a.videoUrl) img = `<img src="https://img.youtube.com/vi/${ytId(a.videoUrl)}/hqdefault.jpg" alt="${t}" loading="lazy">`;
+
+  const hasDoc   = !!a.fileUrl;   // cet article a un document téléchargeable
+  const price    = a.price || 500; // prix en FCFA (défini dans l'article, défaut 500)
+  const isFree   = !a.price || a.price === 0;
+
+  let docBadge = '';
+  let actions  = `<a class="btn-read" href="article.html?id=${a.id}">Lire l'article →</a>`;
+
+  if (hasDoc) {
+    if (isFree) {
+      // Document gratuit
+      docBadge = `<span class="card-free-badge">📄 Gratuit</span>`;
+      actions += ` <a class="btn-download" href="${encodeURI(a.fileUrl)}" target="_blank" download>⬇ Télécharger</a>`;
+    } else {
+      // Document payant — vérifier l'achat
+      const owned = await checkPurchase(a.id);
+      if (owned) {
+        docBadge = `<span class="card-owned-badge">✅ Acheté</span>`;
+        actions += ` <a class="btn-download" href="${encodeURI(a.fileUrl)}" target="_blank" download>⬇ Télécharger</a>`;
+      } else if (!_user) {
+        // Non connecté : inviter à se connecter
+        docBadge = `<span class="card-paid-badge">🔒 ${price.toLocaleString('fr')} FCFA</span>`;
+        actions += ` <a class="btn-login-prompt" href="auth.html?redirect=education.html">🔐 Se connecter pour acheter</a>`;
+      } else {
+        // Connecté mais pas acheté : bouton acheter
+        const payUrl = `paiement.html?mode=unit&article=${encodeURIComponent(a.id)}&price=${price}&title=${encodeURIComponent(a.title)}&file=${encodeURIComponent(a.fileUrl)}`;
+        docBadge = `<span class="card-paid-badge">🔒 ${price.toLocaleString('fr')} FCFA</span>`;
+        actions += ` <a class="btn-buy" href="${payUrl}">💳 Acheter — ${price.toLocaleString('fr')} FCFA</a>`;
+      }
+    }
+  }
+
+  return `<article class="card">
+    <div class="card-img">
+      ${img}
+      <span class="card-badge">Éducation</span>
+      ${docBadge}
+    </div>
+    <div class="card-body">
+      <h3>${t}</h3>
+      <p>${c}${c.length >= 120 ? '...' : ''}</p>
+      <div class="card-actions">${actions}</div>
+    </div>
+  </article>`;
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Sport</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#ffffff;--accent:#e85d26;--accent2:#f5a623;--cat:#f59e0b;--cat-dark:#d97706;--radius:14px;--shadow:0 4px 24px rgba(11,15,26,0.08);--shadow-hover:0 12px 40px rgba(11,15,26,0.15);--transition:all 0.28s cubic-bezier(0.4,0,0.2,1)}
+[data-theme="dark"]{--ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;--white:#161b27;--shadow:0 4px 24px rgba(0,0,0,.3);--shadow-hover:0 12px 40px rgba(0,0,0,.45)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:16px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--ink);letter-spacing:1px}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--ink-soft);font-size:14px;font-weight:500;transition:var(--transition)}
+.nav-links a:hover{background:rgba(232,93,38,0.08);color:var(--accent)}
+.nav-links a.active{color:var(--cat);background:rgba(245,158,11,0.1)}
+.page-hero{background:linear-gradient(135deg,#f59e0b,#ef4444);padding:60px 32px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'⚽';position:absolute;right:10%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:0.1}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;margin-bottom:12px}
+.page-hero p{color:rgba(255,255,255,0.82);font-size:1.05rem;max-width:500px;margin:0 auto}
+.container{max-width:1280px;margin:0 auto;padding:0 32px}
+.section{padding:72px 0}
+.section-header{display:flex;align-items:center;margin-bottom:40px}
+.section-label{background:var(--cat);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:1px;margin-right:12px}
+.section-header h2{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--ink);display:inline}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px}
+.card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);display:flex;flex-direction:column;border:1px solid rgba(0,0,0,0.04)}
+[data-theme="dark"] .card{border-color:rgba(255,255,255,0.05)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+.card-img{position:relative;aspect-ratio:16/10;overflow:hidden;background:#fef3c7}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.card:hover .card-img img{transform:scale(1.05)}
+.no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#fef3c7,#fde68a)}
+.badge{position:absolute;top:14px;left:14px;background:rgba(255,255,255,0.95);color:var(--cat-dark);padding:5px 12px;border-radius:30px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.card-body{padding:24px;display:flex;flex-direction:column;flex:1}
+.card-body h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.35;color:var(--ink);margin-bottom:10px}
+.card-body p{color:var(--muted);font-size:0.9rem;line-height:1.6;flex:1;margin-bottom:20px}
+.read-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--cat),var(--cat-dark));color:white;padding:11px 22px;border-radius:30px;font-size:13px;font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:0 3px 12px rgba(245,158,11,0.35);align-self:flex-start}
+.read-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,158,11,0.45)}
+.empty-state{text-align:center;color:var(--muted);padding:80px 20px;grid-column:1/-1}
+.empty-state h3{font-size:1.2rem;margin-bottom:8px;color:var(--ink)}
+.skeleton{background:linear-gradient(90deg,rgba(0,0,0,0.04) 25%,rgba(0,0,0,0.08) 50%,rgba(0,0,0,0.04) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius);height:280px}
+[data-theme="dark"] .skeleton{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:200% 100%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+footer{background:var(--ink);color:rgba(255,255,255,0.6);text-align:center;padding:36px 20px;font-size:13px;transition:background .3s}
+footer a{color:rgba(255,255,255,0.5);text-decoration:none;margin:0 10px;transition:var(--transition)}
+footer a:hover{color:var(--accent)}
+.footer-links{margin-bottom:16px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+@media(max-width:768px){.nav-links{display:none}.nav{padding:0 16px}.container{padding:0 16px}.page-hero{padding:44px 16px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sport.html" class="active">Sport</a></li>
+      <li><a href="education.html">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+</header>
+<div class="page-hero">
+  <h1>Sport</h1>
+  <p>Résultats, compétitions, transferts et toute l'actualité sportive du Burkina Faso et du monde.</p>
+</div>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Sport</span>
+      <h2>Articles récents</h2>
+    </div>
+    <div class="grid" id="grid">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a><a href="sport.html">Sport</a><a href="education.html">Éducation</a><a href="politique.html">Politique</a><a href="contact.html">Contact</a>
+  </div>
+  <span>© 2026 NACTUS · Ouagadougou, Burkina Faso 🇧🇫</span>
+</footer>
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+const FIREBASE_CONFIG={apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",authDomain:"videome-b7157.firebaseapp.com",projectId:"videome-b7157",storageBucket:"videome-b7157.appspot.com",messagingSenderId:"365500246890",appId:"1:365500246890:web:99423413909b9fcc631313"};
+const app=getApps().length?getApps()[0]:initializeApp(FIREBASE_CONFIG); const db=getFirestore(app); const box=document.getElementById("grid");
+function esc(s){if(!s)return"";return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function ytId(url){try{let id=url.split("v=")[1]||url.split("youtu.be/")[1]||"";return id.split("&")[0].split("?")[0];}catch(e){return "";}}
+onSnapshot(query(collection(db,"articles"),orderBy("date","desc")),snap=>{
+  let html="",found=false;
+  snap.forEach(d=>{
+    const a=d.data(); if(a.category!=="Sport")return; if((a.status||"publié")==="brouillon")return; found=true;
+    const t=esc(a.title),c=esc(a.plainText||a.content||"");
+    let img=`<div class="no-img">⚽</div>`;
+    if(a.imageUrl)img=`<img src="${encodeURI(a.imageUrl)}" alt="${t}" loading="lazy">`;
+    else if(a.videoUrl)img=`<img src="https://img.youtube.com/vi/${ytId(a.videoUrl)}/hqdefault.jpg" alt="${t}" loading="lazy">`;
+    html+=`<article class="card"><div class="card-img">${img}<span class="badge">Sport</span></div><div class="card-body"><h3>${t}</h3><p>${c.substring(0,120)}...</p><a class="read-btn" href="article.html?id=${d.id}">Lire l'article →</a></div></article>`;
+  });
+  box.innerHTML=found?html:`<div class="empty-state"><h3>Aucun article</h3><p>Pas encore d'actualités sportives.</p></div>`;
+}, err=>{
+  console.error(err);
+  box.innerHTML=`<div class="empty-state"><h3>Erreur de chargement</h3><p>Impossible de récupérer les articles pour le moment.</p></div>`;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>

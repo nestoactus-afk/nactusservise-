@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NACTUS — Recherche</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0f1a;--ink-soft:#374151;--muted:#6b7280;--bg:#f9f8f6;--white:#ffffff;--card:#ffffff;--border:#e2e8f0;--accent:#e85d26;--accent2:#f5a623;--accent-grd:linear-gradient(135deg,#e85d26,#f5a623);--radius:14px;--shadow:0 4px 24px rgba(11,15,26,.08);--t:all .28s cubic-bezier(.4,0,.2,1)}
+[data-theme="dark"]{--ink:#f1f5f9;--ink-soft:#cbd5e1;--muted:#94a3b8;--bg:#0d1117;--white:#161b27;--card:#1e2435;--border:#2d3a52;--shadow:0 4px 24px rgba(0,0,0,.35)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;transition:background .3s,color .3s}
+header{background:rgba(255,255,255,.85);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(16px);transition:background .3s}
+[data-theme="dark"] header{background:rgba(22,27,39,.85)}
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0}
+.logo-mark{width:40px;height:40px;background:var(--accent-grd);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:18px}
+.logo-text{font-family:'Playfair Display',serif;font-weight:900;font-size:22px;color:var(--ink)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:15px;font-weight:600;transition:var(--t)}
+.nav-links a:hover{background:rgba(232,93,38,.08);color:var(--accent)}
+
+.search-hero{padding:52px 32px 32px;text-align:center}
+.search-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;margin-bottom:20px}
+.search-box{max-width:640px;margin:0 auto;position:relative}
+.search-box input{width:100%;padding:18px 54px 18px 22px;border-radius:50px;border:2px solid var(--border);background:var(--card);color:var(--ink);font-size:16px;font-family:inherit;outline:none;transition:var(--t)}
+.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(232,93,38,.1)}
+.search-box .icon{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--muted);pointer-events:none}
+
+.filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.filter-chip{padding:8px 18px;border-radius:30px;border:1.5px solid var(--border);background:var(--card);color:var(--ink-soft);font-size:13px;font-weight:600;cursor:pointer;transition:var(--t);font-family:inherit}
+.filter-chip.active{background:var(--accent-grd);color:white;border-color:transparent}
+.filter-chip:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+
+.container{max-width:1000px;margin:0 auto;padding:20px 32px 80px}
+.result-count{color:var(--muted);font-size:14px;margin-bottom:20px;text-align:center}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.result-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:var(--t);display:flex;flex-direction:column;text-decoration:none;color:inherit}
+.result-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.12)}
+.result-img{aspect-ratio:16/9;overflow:hidden;background:var(--bg)}
+.result-img img{width:100%;height:100%;object-fit:cover}
+.no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.2rem;background:linear-gradient(135deg,#e2e8f0,#cbd5e1)}
+.result-body{padding:18px}
+.result-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.badge-sport{background:#fef3c7;color:#d97706}.badge-edu{background:#d1fae5;color:#059669}.badge-pol{background:#ede9fe;color:#6d28d9}.badge-actu{background:#e0e7ff;color:#4f46e5}
+.result-body h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;line-height:1.3;margin-bottom:8px}
+.result-body p{color:var(--muted);font-size:13px;line-height:1.5}
+.result-tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.result-tags span{font-size:11px;color:var(--accent);background:rgba(232,93,38,.08);padding:2px 8px;border-radius:12px}
+
+.empty-state{text-align:center;padding:80px 20px;color:var(--muted)}
+.empty-state .icon{font-size:3rem;margin-bottom:16px}
+.empty-state h3{font-size:1.2rem;color:var(--ink);margin-bottom:8px}
+
+.skeleton{background:linear-gradient(90deg,rgba(0,0,0,.04) 25%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.04) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius);height:220px}
+[data-theme="dark"] .skeleton{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:200% 100%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:700px){.nav-links{display:none}.search-hero{padding:36px 16px 24px}.container{padding:16px 16px 60px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">NACTUS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sport.html">Sport</a></li>
+      <li><a href="education.html">Éducation</a></li>
+      <li><a href="politique.html">Politique</a></li>
+    </ul>
+  </nav>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+</header>
+
+<div class="search-hero">
+  <h1>Rechercher un article</h1>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Titre, mot-clé, tag..." autofocus>
+    <span class="icon">🔍</span>
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter-chip active" data-cat="">Tout</button>
+    <button class="filter-chip" data-cat="Actualité">🌍 Actualité</button>
+    <button class="filter-chip" data-cat="Sport">⚽ Sport</button>
+    <button class="filter-chip" data-cat="Éducation">📚 Éducation</button>
+    <button class="filter-chip" data-cat="Politique">🏛️ Politique</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="result-count" id="result-count"></div>
+  <div class="results-grid" id="results-grid">
+    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+const CFG = {apiKey:"AIzaSyCmUN4AsQ7oryWpF6ULtshkZEOuvFekAOo",authDomain:"videome-b7157.firebaseapp.com",projectId:"videome-b7157",storageBucket:"videome-b7157.appspot.com",messagingSenderId:"365500246890",appId:"1:365500246890:web:99423413909b9fcc631313"};
+const app = getApps().length ? getApps()[0] : initializeApp(CFG);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function badgeCls(c){return {Sport:'badge-sport',Éducation:'badge-edu',Politique:'badge-pol'}[c]||'badge-actu';}
+function catEmoji(c){return {Sport:'⚽',Éducation:'📚',Politique:'🏛️'}[c]||'📰';}
+
+let allArticles = [];
+let activeCat = '';
+let searchTerm = '';
+
+// On ne charge QUE les articles publiés : la recherche ne doit jamais révéler
+// de brouillon, même en tapant son titre exact.
+onSnapshot(query(collection(db, 'articles'), orderBy('date', 'desc')), snap => {
+  allArticles = [];
+  snap.forEach(d => {
+    const a = d.data();
+    if ((a.status || 'publié') === 'brouillon') return;
+    allArticles.push({ id: d.id, ...a });
+  });
+  render();
+});
+
+$('search-input').addEventListener('input', e => {
+  searchTerm = e.target.value.trim().toLowerCase();
+  render();
+});
+
+$('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-chip');
+  if (!btn) return;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  render();
+});
+
+// Lit un paramètre ?q= dans l'URL pour permettre des liens de recherche directs
+const urlQuery = new URLSearchParams(window.location.search).get('q');
+if (urlQuery) {
+  $('search-input').value = urlQuery;
+  searchTerm = urlQuery.trim().toLowerCase();
+}
+
+function matches(a) {
+  if (activeCat && a.category !== activeCat) return false;
+  if (!searchTerm) return true;
+  const haystack = [
+    a.title || '',
+    a.plainText || a.content || '',
+    ...(a.tags || [])
+  ].join(' ').toLowerCase();
+  return haystack.includes(searchTerm);
+}
+
+function render() {
+  const grid = $('results-grid');
+  const filtered = allArticles.filter(matches);
+
+  $('result-count').textContent = searchTerm || activeCat
+    ? `${filtered.length} résultat${filtered.length !== 1 ? 's' : ''}`
+    : `${allArticles.length} article${allArticles.length !== 1 ? 's' : ''} au total`;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="icon">🔍</div>
+      <h3>Aucun résultat</h3>
+      <p>Essayez un autre mot-clé ou une autre catégorie.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(a => {
+    const img = a.imageUrl
+      ? `<img src="${encodeURI(a.imageUrl)}" alt="${esc(a.title)}" loading="lazy">`
+      : `<div class="no-img">${catEmoji(a.category)}</div>`;
+    const excerpt = esc((a.plainText || a.content || '').replace(/<[^>]*>/g, '')).substring(0, 90);
+    const tags = (a.tags || []).slice(0, 3).map(t => `<span>#${esc(t)}</span>`).join('');
+    return `<a class="result-card" href="article.html?id=${a.id}">
+      <div class="result-img">${img}</div>
+      <div class="result-body">
+        <span class="result-badge ${badgeCls(a.category)}">${esc(a.category || 'Actualité')}</span>
+        <h3>${esc(a.title)}</h3>
+        <p>${excerpt}${excerpt.length >= 90 ? '...' : ''}</p>
+        ${tags ? `<div class="result-tags">${tags}</div>` : ''}
+      </div>
+    </a>`;
+  }).join('');
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@25.0.0"></script>
+<script type="module" src="appwrite-storage.js"></script>
+<script type="module" src="nactus-ui.js"></script>
+</body>
+</html>
